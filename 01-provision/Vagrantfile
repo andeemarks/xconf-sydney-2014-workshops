@@ -4,18 +4,36 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+def common_puppet_config(puppet)
+    puppet.hiera_config_path = 'hiera.yaml'
+    puppet.working_directory = "/vagrant"
+    puppet.module_path = %W(modules module-lib)
+end
 
-  config.vm.provision "puppet"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "web" do |web|
     web.vm.box = "puppetlabs/centos-6.5-64-puppet"
     config.vm.box_check_update = false
+
+    web.vm.provision "puppet" do |puppet|
+      common_puppet_config(puppet)
+      puppet.facter = {
+        "machine_role" => "web"
+      }
+    end
   end
 
   config.vm.define "db" do |db|
     db.vm.box = "puppetlabs/centos-6.5-64-puppet"
     config.vm.box_check_update = false
+
+    db.vm.provision "puppet" do |puppet|
+      common_puppet_config(puppet)
+      puppet.facter = {
+        "machine_role" => "db"
+      }
+    end
   end
-  
+
 end

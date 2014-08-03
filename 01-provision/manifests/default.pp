@@ -1,3 +1,2 @@
-file { '/tmp/junk.txt':
-	ensure => absent,
-}
+hiera_include('classes')
+
