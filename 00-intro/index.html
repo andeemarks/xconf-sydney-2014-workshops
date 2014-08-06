@@ -108,7 +108,7 @@
 							<li>cd $XCONF_HOME</li>
 							<li>copy Vagrant ISO to $XCONF_HOME</li>
 							<li>create a Vagrantfile in $XCONF_HOME:
-							<pre><code data-trim>
+							<pre><code data-trim class="ruby">
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -137,14 +137,14 @@ end
 					</section>		
 					<section>
 					<h2>Clone source repos</h2>
-						<pre><code data-trim>
+						<pre><code data-trim class="bash">
 # Back-end service
 mkdir -p $GOPATH/src/github.com/andeemarks
 cd $GOPATH/src/github.com/andeemarks
 git clone https://github.com/andeemarks/xconf-go-svc.git
 cd xconf-go-svc
 						</code></pre>
-						<pre><code data-trim>
+						<pre><code data-trim class="bash">
 # Front-end service
 cd ~/var/www/html
 sudo git clone https://github.com/andeemarks/xconf-svc-client.git
@@ -152,7 +152,7 @@ sudo git clone https://github.com/andeemarks/xconf-svc-client.git
 					</section>
 					<section>
 					<h2>Start back-end service</h2>
-						<pre><code data-trim>
+						<pre><code data-trim class="bash">
 cd $GOPATH/bin
 . ./xconf-go-svc
 						</code></pre>
