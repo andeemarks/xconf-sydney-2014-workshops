@@ -101,9 +101,6 @@
 							<li>copy Vagrant ISO to $XCONF_HOME</li>
 							<li>create a Vagrantfile in $XCONF_HOME:
 							<pre><code data-trim>
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -112,6 +109,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", "512"]
   end
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 8080, host: 8081
 end
 							</code></pre>
 							<li>vagrant up</li>
@@ -125,6 +124,7 @@ end
 							<li>Golang</li>
 							<li>Git client</li>
 							<li>Apache</li>
+							<li>Port forwarding of 80 and 8080</li>
 						</ul>
 					</section>		
 					<section>
@@ -138,14 +138,23 @@ cd xconf-go-svc
 						</code></pre>
 						<pre><code data-trim>
 # Front-end service
-cd ~/web
+cd ~/var/www/html
 sudo git clone https://github.com/andeemarks/xconf-svc-client.git
+						</code></pre>
+					</section>
+					<section>
+					<h2>Start back-end service</h2>
+						<pre><code data-trim>
+cd $GOPATH/bin
+. ./xconf-go-svc
 						</code></pre>
 					</section>
 					<section>
 						<h2>Test</h2>
 						<ol>
-							<li>Browse to http://...</li>
+							<li>Browse to http://localhost:8080/xconf-svc-client/</li>
+							<li>Set http://localhost:8081/apidocs.json as the URL</li>
+							<li>Winning!</li>
 						</ol>
 					</section>
 				</section>
