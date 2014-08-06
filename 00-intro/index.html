@@ -54,11 +54,11 @@
 					<h2>Objectives</h2>
 					<ul>
 					<li>
-						Gain background knowledge and practical experience in software development from the perspective of running modern web systems in production.
+						Gain knowledge and practical experience in software development from the perspective of running modern web applications in production.
 					</li>
 
 					<li>
-						Leave with a working copy of a system involving all components
+						Start with just the code - leave with the system
 					</li>
 					<li>
 						Understand what areas weren’t covered at all and/or to depth
@@ -74,11 +74,11 @@
 					<h2>Agenda</h2>
 					<ol>
 					<li>Introduction/Iteration 0
-					<li class="fragment">Workshop 1 - Environment Provisioning
-					<li class="fragment">Workshop 2 - Application Packaging and Deployment
-					<li class="fragment">Workshop 3 - Continuous Integration Pipelines
-					<li class="fragment">Workshop 4 - Log Management
-					<li class="fragment">Workshop 5 - Performance Monitoring
+					<li class="fragment">Environment Provisioning (Karl Chu)
+					<li class="fragment">Application Packaging and Deployment (Sam Gibson)
+					<li class="fragment">Continuous Integration Pipelines (Romit Kala)
+					<li class="fragment">Log Management (Mia Zhu/Pei Shi Yong)
+					<li class="fragment">Performance Monitoring (Zhamak Dehghani)
 					</ol>
 				</section>
 
@@ -91,30 +91,56 @@
 						<h2>Prerequisites</h2>
 						<ul>
 							<li>Laptop with Vagrant/Virtual Box installed</li>
-							<li>USB key with bootstrap Vagrant ISO</li>
+							<li>USB key with bootstrap Vagrant ISO and Vagrantfile</li>
 						</ul>
 					</section>
 					<section>
 						<h2>Create developer box</h2>
 						<ol>
 							<li>cd $XCONF_HOME</li>
-							<li>...</li>
+							<li>copy Vagrant ISO to $XCONF_HOME</li>
+							<li>create a Vagrantfile in $XCONF_HOME:
+							<pre><code data-trim>
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "centos-go-1.2.2"
+  config.vm.box_url = "xconf-dev.box"
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+end
+							</code></pre>
 							<li>vagrant up</li>
 							<li>vagrant ssh</li>
 						</ol>
-					</section>						
+					</section>				
 					<section>
-						<h2>Clone source repos</h2>
+						<h2>What's in our Box?</h2>
 						<ul>
-							<li>Back-end service</li>
-							<pre><code data-trim>
+							<li>Centos 6.5</li>
+							<li>Golang</li>
+							<li>Git client</li>
+							<li>Apache</li>
+						</ul>
+					</section>		
+					<section>
+					<h2>Clone source repos</h2>
+						<pre><code data-trim>
+# Back-end service
+mkdir -p $GOPATH/src/github.com/andeemarks
+cd $GOPATH/src/github.com/andeemarks
 git clone https://github.com/andeemarks/xconf-go-svc.git
-							</code></pre>
-							<li>Front-end</li>
-							<pre><code data-trim>
-git clone https://github.com/andeemarks/xconf-svc-client.git
-							</code></pre>
-						</ul>	
+cd xconf-go-svc
+						</code></pre>
+						<pre><code data-trim>
+# Front-end service
+cd ~/web
+sudo git clone https://github.com/andeemarks/xconf-svc-client.git
+						</code></pre>
 					</section>
 					<section>
 						<h2>Test</h2>
