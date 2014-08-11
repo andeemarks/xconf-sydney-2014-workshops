@@ -54,11 +54,11 @@
 					<h2>Objectives</h2>
 					<ul>
 					<li>
-						Gain background knowledge and practical experience in software development from the perspective of running modern web systems in production.
+						Gain knowledge and practical experience in software development from the perspective of running modern web applications in production.
 					</li>
 
 					<li>
-						Leave with a working copy of a system involving all components
+						Start with just the code - leave with the system
 					</li>
 					<li>
 						Understand what areas weren’t covered at all and/or to depth
@@ -74,62 +74,97 @@
 					<h2>Agenda</h2>
 					<ol>
 					<li>Introduction/Iteration 0
-					<li class="fragment">Workshop 1 - Environment Provisioning
-					<li class="fragment">Workshop 2 - Application Packaging and Deployment
-					<li class="fragment">Workshop 3 - Continuous Integration Pipelines
-					<li class="fragment">Workshop 4 - Log Management
-					<li class="fragment">Workshop 5 - Performance Monitoring
+					<li class="fragment">Environment Provisioning (Karl Chu)
+					<li class="fragment">Application Packaging and Deployment (Sam Gibson)
+					<li class="fragment">Continuous Integration Pipelines (Romit Kala)
+					<li class="fragment">Log Management (Mia Zhu/Pei Shi Yong)
+					<li class="fragment">Performance Monitoring (Zhamak Dehghani)
 					</ol>
 				</section>
 
 				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Time to get started!</h2>
-					</section>
-					<section>
-						<h2>Prerequisites</h2>
-						<ul>
-							<li>Laptop with Vagrant/Virtual Box installed</li>
-							<li>USB key with bootstrap Vagrant ISO</li>
-						</ul>
-					</section>
-					<section>
-						<h2>Create developer box</h2>
-						<ol>
-							<li>cd $XCONF_HOME</li>
-							<li>...</li>
-							<li>vagrant up</li>
-							<li>vagrant ssh</li>
-						</ol>
-					</section>						
-					<section>
-						<h2>Clone source repos</h2>
-						<ul>
-							<li>Back-end service</li>
-							<pre><code data-trim>
-git clone https://github.com/andeemarks/xconf-go-svc.git
-							</code></pre>
-							<li>Front-end</li>
-							<pre><code data-trim>
-git clone https://github.com/andeemarks/xconf-svc-client.git
-							</code></pre>
-						</ul>	
-					</section>
-					<section>
-						<h2>Test</h2>
-						<ol>
-							<li>Browse to http://...</li>
-						</ol>
-					</section>
-				</section>
-
 				<section>
 					<h2>The Application</h2>
 					<ul>
 						<li>Back-end: A simple REST-based service written in Golang</li>
 						<li>Front-end: A static Swagger UI browser</li>
 					</ul>
+				</section>
+
+				<section>
+					<section>
+						<img width="1150" height="489" src="http://themodernmage.com/wp-content/uploads/2013/12/2566208-here_we_go_joker_ref_pic_by_sullen_skrewt.jpg" alt="Here we go!">
+					</section>
+					<section>
+						<h2>Prerequisites</h2>
+						<ul>
+							<li>Laptop with Vagrant/Virtual Box installed</li>
+							<li>USB key with bootstrap Vagrant ISO and Vagrantfile</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Create developer box</h2>
+						<ol>
+							<li>cd $XCONF_HOME</li>
+							<li>copy Vagrant ISO to $XCONF_HOME</li>
+							<li>create a Vagrantfile in $XCONF_HOME:
+							<pre><code data-trim class="ruby">
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "centos-go-1.2.2"
+  config.vm.box_url = "xconf-dev.box"
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 8080, host: 8081
+end
+							</code></pre>
+							<li>vagrant up</li>
+							<li>vagrant ssh</li>
+						</ol>
+					</section>				
+					<section>
+						<h2>What's in our Box?</h2>
+						<ul>
+							<li>Centos 6.5</li>
+							<li>Golang</li>
+							<li>Git client</li>
+							<li>Apache</li>
+							<li>Port forwarding of 80 and 8080</li>
+						</ul>
+					</section>		
+					<section>
+					<h2>Clone source repos</h2>
+						<pre><code data-trim class="bash">
+# Back-end service
+mkdir -p $GOPATH/src/github.com/andeemarks
+cd $GOPATH/src/github.com/andeemarks
+git clone https://github.com/andeemarks/xconf-go-svc.git
+cd xconf-go-svc
+						</code></pre>
+						<pre><code data-trim class="bash">
+# Front-end service
+cd ~/var/www/html
+sudo git clone https://github.com/andeemarks/xconf-svc-client.git
+						</code></pre>
+					</section>
+					<section>
+					<h2>Start back-end service</h2>
+						<pre><code data-trim class="bash">
+cd $GOPATH/bin
+. ./xconf-go-svc
+						</code></pre>
+					</section>
+					<section>
+						<h2>Test</h2>
+						<ol>
+							<li>Browse to http://localhost:8080/xconf-svc-client/</li>
+							<li>Set http://localhost:8081/apidocs.json as the URL</li>
+							<li>Winning!</li>
+						</ol>
+					</section>
 				</section>
 
 				<section>
