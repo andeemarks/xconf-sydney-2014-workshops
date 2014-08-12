@@ -3,10 +3,11 @@ class jdk7 {
 
 	$packages_dir = $common::packages_dir
 
-	$rpm_name = 'jdk-7u67-linux-x64.rpm'
+	$package_name = 'jdk-1.7.0_67-fcs.x86_64'
+	$rpm_name = "jdk-7u67-linux-x64.rpm"
 	$rpm_path = "${packages_dir}/${rpm_name}"
 
-	package { 'jdk7':
+	package { $package_name:
 		ensure => installed,
 		provider => 'rpm',
 		source => $rpm_path,

@@ -6,18 +6,31 @@ class gocd::server {
 	$packages_dir = $common::packages_dir
 
 	$version = '14.2.0-377'
-	$rpm_name = "go-server-${version}.noarch.rpm"
+	$package_name = "go-server-${version}"
+	$rpm_name = "${package_name}.noarch.rpm"
 	$rpm_path = "${packages_dir}/${rpm_name}"
 
-	package { 'go-server':
+	package { $package_name:
 		ensure => installed,
 		provider => 'rpm',
 		source => $rpm_path,
 	}
 
+	file_line { 'Set JAVA_HOME for go server':
+		path  => '/etc/default/go-server',
+		line  => 'JAVA_HOME=/usr/java/default',
+		match => '^JAVA_HOME=.*',
+		require => Package[$package_name],
+		notify => Service['go-server'],
+	}
+
 	service { 'go-server':
 		enable => true,
 		ensure => running,
-		require => [ Package['go-server'], Class['jdk7'] ],
+		require => [ 
+			Package[$package_name], 
+			Class['jdk7'], 
+			File_line['Set JAVA_HOME for go server'],
+		],
 	}
 }
