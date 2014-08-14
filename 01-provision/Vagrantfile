@@ -3,6 +3,8 @@
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
+BOX = "puppetlabs/centos-6.5-64-puppet"
+# BOX = "puppetlabs/ubuntu-14.04-64-puppet"
 
 def common_puppet_config(puppet)
     puppet.hiera_config_path = 'hiera.yaml'
@@ -13,7 +15,7 @@ end
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "web" do |web|
-    web.vm.box = "puppetlabs/centos-6.5-64-puppet"
+    web.vm.box = BOX
     web.vm.box_check_update = false
 
     web.vm.provision "puppet" do |puppet|
@@ -24,20 +26,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define "db" do |db|
-    db.vm.box = "puppetlabs/centos-6.5-64-puppet"
-    db.vm.box_check_update = false
-
-    db.vm.provision "puppet" do |puppet|
-      common_puppet_config(puppet)
-      puppet.facter = {
-        "machine_role" => "db"
-      }
-    end
-  end
-
   config.vm.define 'ci' do |ci|
-    ci.vm.box = "puppetlabs/centos-6.5-64-puppet"
+    ci.vm.box = BOX
     ci.vm.box_check_update = false
     ci.vm.network "forwarded_port", guest: 8153, host: 18153
     ci.vm.network "forwarded_port", guest: 8154, host: 18154

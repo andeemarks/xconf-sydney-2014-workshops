@@ -7,13 +7,13 @@ class gocd::server {
 
 	$version = '14.2.0-377'
 	$package_name = "go-server-${version}"
-	$rpm_name = "${package_name}.noarch.rpm"
-	$rpm_path = "${packages_dir}/${rpm_name}"
+	$binary_name = "${package_name}.noarch.rpm"
+	$binary_path = "${packages_dir}/${binary_name}"
 
 	package { $package_name:
 		ensure => installed,
 		provider => 'rpm',
-		source => $rpm_path,
+		source => $binary_path,
 	}
 
 	file_line { 'Set JAVA_HOME for go server':
