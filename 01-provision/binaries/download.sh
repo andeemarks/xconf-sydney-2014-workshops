@@ -1,26 +1,39 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+MD5=$( which md5 2>/dev/null || which md5sum 2>/dev/null )
+
 function download {
 	URL=$1
 	FILE_NAME=$( basename ${URL} )
 	echo "Downloading ${FILE_NAME}"
-	curl -Ls "${URL}" -o "${FILE_NAME}"
+	curl -Ls "${URL}" -o "${DIR}/${FILE_NAME}"
+}
+
+function get_md5 {
+	FILE_PATH=$1
+	if [ "$( basename ${MD5} )" == "md5" ]; then
+		${MD5} -q ${FILE_PATH}
+	else
+		${MD5} ${FILE_PATH} | awk '{ print $1 }'
+	fi
 }
 
 function download_if_required {
 	URL=$1
-	EXPECTED_MD5=$2
+	EXPECTED_HASH=$2
 	FILE_NAME=$( basename ${URL} )
+	FILE_PATH="${DIR}/${FILE_NAME}"
 
-	if [ ! -e ${FILE_NAME} ]; then
+	if [ ! -e ${FILE_PATH} ]; then
 		download $URL
 	else
-		MD5=$( md5 -q ${FILE_NAME} )
-		if [ "${MD5}" != "${EXPECTED_MD5}" ]; then
-			rm -f ${FILE_NAME}
+		HASH=$( get_md5 ${FILE_PATH} )
+		if [ "${HASH}" != "${EXPECTED_HASH}" ]; then
+			rm -f ${FILE_PATH}
 			download $URL
 		else
-			echo "${FILE_NAME} already download."
+			echo "${FILE_NAME} already downloaded."
 		fi
 	fi
 }
