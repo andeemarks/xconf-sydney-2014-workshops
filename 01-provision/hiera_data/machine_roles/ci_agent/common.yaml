@@ -1,0 +1,4 @@
+---
+classes:
+- gocd::agent
+- golang::devel
