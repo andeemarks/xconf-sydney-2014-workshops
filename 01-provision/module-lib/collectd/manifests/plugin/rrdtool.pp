@@ -1,5 +1,6 @@
 # https://collectd.org/wiki/index.php/Plugin:RRDtool
 class collectd::plugin::rrdtool (
+  $order            = '10', # zhamak's hack to pass order through
   $ensure           = present,
   $datadir          = '/var/lib/collectd/rrd',
   $createfilesasync = false,
@@ -43,6 +44,7 @@ class collectd::plugin::rrdtool (
   }
 
   collectd::plugin {'rrdtool':
+    order   => $order, # zhamak's hack to pass order through
     ensure  => $ensure,
     content => template('collectd/plugin/rrdtool.conf.erb'),
   }

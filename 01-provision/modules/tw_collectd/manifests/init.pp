@@ -1,18 +1,20 @@
 class tw_collectd { 
 
-  package { ['rrdtool-devel', 'rrdtool'] :
-    ensure  => present
-  }
-
   class { '::collectd' :
-    purge_config => true,
-    version => present
+    purge        => true,
+    recurse      => true,
+    purge_config => true
   }
 
-  collectd::plugin { 'collectd::plugin::syslog': }
-  collectd::plugin { 'collectd::plugin::cpu': }
+  collectd::plugin { 'syslog':
+    order => '00'
+  }
+  collectd::plugin { 'cpu': 
+    order => '20'
+  }
 
   class { 'collectd::plugin::rrdtool':
+    order             => '30',
     datadir           => '/var/lib/collectd/rrd',
     createfilesasync  => false,
     rrarows           => 1200,
@@ -21,6 +23,11 @@ class tw_collectd {
     cacheflush        => 900,
     cachetimeout      => 120,
     writespersecond   => 50
+
+  }
+
+  package { ['collectd-apache', 'collectd-rrdtool'] :
+    ensure  => present
   }
 
 } 
