@@ -1,5 +1,3 @@
 ---
 classes:
-- apache
-- ruby::v2
-- tw_collectd
+- role::client_app
