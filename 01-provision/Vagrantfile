@@ -4,19 +4,32 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 BOX = "puppetlabs/centos-6.5-64-puppet"
-# BOX = "puppetlabs/ubuntu-14.04-64-puppet"
 
 def common_puppet_config(puppet)
   puppet.hiera_config_path = 'hiera.yaml'
   puppet.working_directory = "/vagrant"
   puppet.module_path = %W(modules module-lib)
+  puppet.options = "--verbose --debug"
+end
+
+def common_network_config box
+  # NOTE: This defaults the bridge to the wireless adapter, but that
+  # should be good enough for jazz, right?
+  box.vm.network "public_network", bridge: 'en0: Wi-Fi (AirPort)'
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+
   config.vm.define 'test' do |box|
     box.vm.box = BOX
     box.vm.box_check_update = false
+
+    common_network_config box
+    config.vm.hostname = "#{`whoami`.strip}-test"
 
     box.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "manifests"
@@ -27,6 +40,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define 'client-app' do |box|
     box.vm.box = BOX
     box.vm.box_check_update = false
+
+    common_network_config box
+    config.vm.hostname = "#{`whoami`.strip}-client-app"
 
     box.vm.provision "puppet" do |puppet|
       common_puppet_config(puppet)
@@ -40,6 +56,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     box.vm.box = BOX
     box.vm.box_check_update = false
 
+    common_network_config box
+    config.vm.hostname = "#{`whoami`.strip}-web-service"
+
     box.vm.provision "puppet" do |puppet|
       common_puppet_config(puppet)
       puppet.facter = {
@@ -51,8 +70,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define 'ci-server' do |box|
     box.vm.box = BOX
     box.vm.box_check_update = false
-    box.vm.network "forwarded_port", guest: 8153, host: 18153
-    box.vm.network "forwarded_port", guest: 8154, host: 18154
+
+    common_network_config box
+    config.vm.hostname = "#{`whoami`.strip}-ci-server"
 
     box.vm.provider "virtualbox" do |v|
       v.memory = 1024
@@ -71,6 +91,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     box.vm.box = BOX
     box.vm.box_check_update = false
 
+    common_network_config box
+    config.vm.hostname = "#{`whoami`.strip}-ci-agent"
+
     box.vm.provision "puppet" do |puppet|
       common_puppet_config(puppet)
       puppet.facter = {
@@ -82,6 +105,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define 'log-stash-server' do |box|
     box.vm.box = BOX
     box.vm.box_check_update = false
+
+    common_network_config box
+    config.vm.hostname = "#{`whoami`.strip}-log-stash-server"
 
     box.vm.provision "puppet" do |puppet|
       common_puppet_config(puppet)

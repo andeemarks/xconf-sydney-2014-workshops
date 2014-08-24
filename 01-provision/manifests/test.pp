@@ -10,6 +10,15 @@ service { 'ip6tables':
 	ensure => stopped,
 }
 
+package { ['avahi', 'avahi-tools']:
+  ensure => installed
+}
+->
+service { ['avahi-daemon']:
+  enable => true,
+  ensure => running
+}
+
 package { 'httpd': }
 
 exec { '/bin/tar zxf /vagrant/binaries/go1.3.1.linux-amd64.tar.gz': 
