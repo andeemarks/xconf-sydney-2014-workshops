@@ -2,3 +2,4 @@
 classes:
 - apache
 - ruby::v2
+- collectd
