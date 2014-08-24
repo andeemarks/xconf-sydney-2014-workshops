@@ -17,5 +17,5 @@ fi
 OPTIONS=`vagrant ssh-config $HOST | awk -v ORS=' ' '{print "-o " $1 "=" $2}'`
   
 CMD="scp ${OPTIONS} $1 $2"
-echo "$CMD"
+#echo "$CMD"
 $CMD
