@@ -5,4 +5,5 @@ class role::client_app {
 #  include ruby::v2
 
   Class['common']->Class['apache']
+  Class['common']->Class['tw_collectd']
 }
