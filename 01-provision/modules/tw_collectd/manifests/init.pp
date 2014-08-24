@@ -26,8 +26,9 @@ class tw_collectd {
 
   }
 
-  package { ['collectd-apache', 'collectd-rrdtool'] :
-    ensure  => present
+  package { ['collectd-apache', 'collectd-rrdtool', 'stress'] :
+    ensure  => installed,
+    require => Package['collectd']
   }
 
 } 
