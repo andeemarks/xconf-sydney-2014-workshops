@@ -1,9 +1,0 @@
----
-:hierarchy:
-    - machine_roles/%{machine_role}/%{environment}
-    - machine_roles/%{machine_role}/common
-    - common
-:backends:
-    - yaml
-:yaml:
-    :datadir: 'hiera_data'
