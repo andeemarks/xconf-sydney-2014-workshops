@@ -16,7 +16,7 @@
 
 		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
-
+		<link rel="stylesheet" href="css/xconf.css">
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -74,21 +74,21 @@
 					<h2>Agenda</h2>
 					<ol>
 					<li>Introduction/Iteration 0
-					<li class="fragment">Environment Provisioning (Karl Chu)
-					<li class="fragment">Application Packaging and Deployment (Sam Gibson)
-					<li class="fragment">Continuous Integration Pipelines (Romit Kala)
-					<li class="fragment">Log Management (Mia Zhu/Pei Shi Yong)
-					<li class="fragment">Performance Monitoring (Zhamak Dehghani)
+					<li class="fragment">Environment Provisioning
+					<li class="fragment">Application Packaging and Deployment
+					<li class="fragment">Continuous Integration Pipelines
+					<li class="fragment">Log Management
+					<li class="fragment">Performance Monitoring
 					</ol>
 				</section>
 
-				<!-- Example of nested vertical slides -->
 				<section>
 					<h2>The Application</h2>
 					<ul>
-						<li>Back-end: A simple REST-based service written in Golang</li>
-						<li>Front-end: A static Swagger UI browser</li>
+						<li>Back-end: A Swagger-compliant RESTful service</li>
+						<li>Front-end: A static HTML Swagger browser</li>
 					</ul>
+						<img src="img/front-end-ui.png">
 				</section>
 
 				<section>
@@ -99,16 +99,18 @@
 						<h2>Prerequisites</h2>
 						<ul>
 							<li>Laptop with Vagrant/Virtual Box installed</li>
-							<li>USB key with bootstrap Vagrant ISO and Vagrantfile</li>
+							<li>Access to smb://sydfs02/shared/TWA Misc/XCONF 2014</li>
 						</ul>
 					</section>
 					<section>
 						<h2>Create developer box</h2>
-						<ol>
-							<li>cd $XCONF_HOME</li>
-							<li>copy Vagrant ISO to $XCONF_HOME</li>
-							<li>create a Vagrantfile in $XCONF_HOME:
-							<pre><code data-trim class="ruby">
+						<pre><code data-trim class="bash">
+# Copy Vagrant stuff for dev box
+cd $XCONF_HOME
+cp /Volumes/XCONF\ 2014/xconf-dev.box .
+cp /Volumes/XCONF\ 2014/Vagrantfile .
+						</code></pre>
+						<pre><code data-trim class="ruby">
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -120,50 +122,78 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 8080, host: 8081
 end
-							</code></pre>
-							<li>vagrant up</li>
-							<li>vagrant ssh</li>
-						</ol>
+						</code></pre>
+						<pre><code data-trim class="bash">
+# Start Vagrant
+vagrant up && vagrant ssh
+						</code></pre>
 					</section>				
 					<section>
-						<h2>What's in our Box?</h2>
+						<h2>What's in the Box?</h2>
 						<ul>
 							<li>Centos 6.5</li>
-							<li>Golang</li>
-							<li>Git client</li>
-							<li>Apache</li>
-							<li>Port forwarding of 80 and 8080</li>
+							<li>Golang 1.2.2</li>
+							<li>FPM 1.2.0</li>
+							<li>Git 1.7.1</li>
+							<li>Apache 2.2.15</li>
 						</ul>
 					</section>		
 					<section>
-					<h2>Clone source repos</h2>
+					<h2>Back-end service</h2>
 						<pre><code data-trim class="bash">
-# Back-end service
+# Clone repo
 mkdir -p $GOPATH/src/github.com/andeemarks
 cd $GOPATH/src/github.com/andeemarks
 git clone https://github.com/andeemarks/xconf-go-svc.git
-cd xconf-go-svc
 						</code></pre>
 						<pre><code data-trim class="bash">
-# Front-end service
-cd ~/var/www/html
+# Build service
+cd xconf-go-svc
+godep restore
+go install
+						</code></pre>
+						<pre><code data-trim class="bash">
+# Run automated tests
+go test
+						</code></pre>
+					</section>
+					<section>
+					<h2>Back-end service</h2>
+						<pre><code data-trim class="bash">
+# Start service
+cd $GOPATH/bin
+./xconf-go-svc &
+						</code></pre>
+						<pre><code data-trim class="bash">
+# Smoke test
+curl localhost:8080/apidocs.json
+						</code></pre>
+
+						<pre><code data-trim class="json">
+{												
+  "apiVersion": "",
+  "swaggerVersion": "1.2",
+  "apis": [
+   {
+    "path": "/users",
+    "description": ""
+   }
+  ]
+ }
+						</code></pre>
+					</section>
+					<section>
+					<h2>Front-end service</h2>
+						<pre><code data-trim class="bash">
+# Clone repo
+cd /var/www/html
 sudo git clone https://github.com/andeemarks/xconf-svc-client.git
 						</code></pre>
-					</section>
-					<section>
-					<h2>Start back-end service</h2>
 						<pre><code data-trim class="bash">
-cd $GOPATH/bin
-. ./xconf-go-svc
+# Smoke test
+curl -I http://localhost/xconf-svc-client/
+# => HTTP/1.1 200 OK
 						</code></pre>
-					</section>
-					<section>
-						<h2>Test</h2>
-						<ol>
-							<li>Browse to http://localhost:8080/xconf-svc-client/</li>
-							<li>Set http://localhost:8081/apidocs.json as the URL</li>
-							<li>Winning!</li>
-						</ol>
 					</section>
 				</section>
 
@@ -174,8 +204,96 @@ cd $GOPATH/bin
 					</p>
 				</section>
 
+				<section>
+                                  <section>
+				    <h2>Continuous Integration Pipelines</h2>
+                                  </section>
+                                  <section>
+                                    <img width="1150" height="489" src="images/pipeline-success.png" alt="Pipeline success">
+                                  </section>
+                                  <section>
+                                    <img width="1150" height="489" src="images/pipeline-failure.png" alt="Pipeline failure">
+                                  </section>
+                                  <section>
+                                    <h2>Pipeline Dependencies</h2>
+                                    <table class="pipelinedependencies">
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/scm_dependency.png" alt="scm dependency"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                        <p>Pipeline 1 depends on an SCM.</p>
+                                        <p>Pipeline 1 will trigger each time it polls the SCM and detects a new revision.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/pipeline_dependency.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipeline 2 depends on Pipeline 1.</p>
+                                          <p>Pipeline 2 will trigger each time Pipeline 1 successfully completes.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/pipeline_scm_dependency.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipeline 2 depends on Pipeline 1 and an SCM.</p>
+                                          <p>Pipeline 2 will only trigger if a new revision has successfully passed through Pipeline 1</p>
+                                        </td>
+                                      </tr>
+                                      </table>
+                                  </section>
+                                  <section>
+                                    <table class="pipelinedependencies">
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-out.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipeline 1 and 2 depend on the same SCM.</p>
+                                          <p>A new revision will trigger both Pipeline 1 and 2.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-in-pipeline.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipelines 1 and 2 depend on an SCM.</p>
+                                          <p>Pipeline 3 depends on Pipelines 1 and 2.</p>
+                                          <p>Pipeline 3 will only trigger if a new revision (SCM) has successfully passed through both Pipeline 1 and Pipeline 2.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-in-pipeline-scm.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipelines 1 and 2 depend on SCM 1.</p>
+                                          <p>Pipeline 3 depends on Pipelines 1 and 2, and SCM 2.</p>
+                                          <p>Pipeline 3 will trigger:</p>
+                                          <p>if a new revision (SCM 1) has successfully passed through both Pipeline 1 and Pipeline 2</p>
+                                          <p>each time it polls SCM 2 and detects a new revision</p>
+                                        </td>
+                                      </tr>
+                                      </table>
+                                  </section>
+                                  <section>
+                                    <table class="pipelinedependencies">
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-in-pipeline-different-scm.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipelines 1 and 2 depend on SCM 1.</p>
+                                          <p>Pipeline 3 depends on SCM 2.</p>
+                                          <p>Pipeline 4 depends on Pipelines 1, 2 and 3.</p>
+                                          <p>Pipeline 4 will trigger:
+                                          <p>if a new revision (SCM 1) has successfully passed through Pipelines 1 and 2.</p>
+                                          <p>each time Pipeline 3 successfully completes (SCM 2)</p>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </section>
+				</section>
 
-					<section>
+<!-- 					<section>
 						<h2>Fragment Styles</h2>
 						<p>There's a few styles of fragments, like:</p>
 						<p class="fragment grow">grow</p>
@@ -188,7 +306,7 @@ cd $GOPATH/bin
 						<p class="fragment current-visible">current-visible</p>
 						<p class="fragment highlight-current-blue">highlight-current-blue</p>
 					</section>
-				</section>
+ -->				</section>
 
 			</div>
 
