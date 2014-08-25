@@ -16,7 +16,7 @@
 
 		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
-
+		<link rel="stylesheet" href="css/xconf.css">
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -204,6 +204,94 @@ curl -I http://localhost/xconf-svc-client/
 					</p>
 				</section>
 
+				<section>
+                                  <section>
+				    <h2>Continuous Integration Pipelines</h2>
+                                  </section>
+                                  <section>
+                                    <img width="1150" height="489" src="images/pipeline-success.png" alt="Pipeline success">
+                                  </section>
+                                  <section>
+                                    <img width="1150" height="489" src="images/pipeline-failure.png" alt="Pipeline failure">
+                                  </section>
+                                  <section>
+                                    <h2>Pipeline Dependencies</h2>
+                                    <table class="pipelinedependencies">
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/scm_dependency.png" alt="scm dependency"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                        <p>Pipeline 1 depends on an SCM.</p>
+                                        <p>Pipeline 1 will trigger each time it polls the SCM and detects a new revision.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/pipeline_dependency.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipeline 2 depends on Pipeline 1.</p>
+                                          <p>Pipeline 2 will trigger each time Pipeline 1 successfully completes.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/pipeline_scm_dependency.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipeline 2 depends on Pipeline 1 and an SCM.</p>
+                                          <p>Pipeline 2 will only trigger if a new revision has successfully passed through Pipeline 1</p>
+                                        </td>
+                                      </tr>
+                                      </table>
+                                  </section>
+                                  <section>
+                                    <table class="pipelinedependencies">
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-out.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipeline 1 and 2 depend on the same SCM.</p>
+                                          <p>A new revision will trigger both Pipeline 1 and 2.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-in-pipeline.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipelines 1 and 2 depend on an SCM.</p>
+                                          <p>Pipeline 3 depends on Pipelines 1 and 2.</p>
+                                          <p>Pipeline 3 will only trigger if a new revision (SCM) has successfully passed through both Pipeline 1 and Pipeline 2.</p>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-in-pipeline-scm.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipelines 1 and 2 depend on SCM 1.</p>
+                                          <p>Pipeline 3 depends on Pipelines 1 and 2, and SCM 2.</p>
+                                          <p>Pipeline 3 will trigger:</p>
+                                          <p>if a new revision (SCM 1) has successfully passed through both Pipeline 1 and Pipeline 2</p>
+                                          <p>each time it polls SCM 2 and detects a new revision</p>
+                                        </td>
+                                      </tr>
+                                      </table>
+                                  </section>
+                                  <section>
+                                    <table class="pipelinedependencies">
+                                      <tr>
+                                        <td class="fragment">
+                                          <img width="300" height="100" src="images/fan-in-pipeline-different-scm.png"></td>
+                                        <td style="vertical-align: middle;font-size: 25px;" class="fragment">
+                                          <p>Pipelines 1 and 2 depend on SCM 1.</p>
+                                          <p>Pipeline 3 depends on SCM 2.</p>
+                                          <p>Pipeline 4 depends on Pipelines 1, 2 and 3.</p>
+                                          <p>Pipeline 4 will trigger:
+                                          <p>if a new revision (SCM 1) has successfully passed through Pipelines 1 and 2.</p>
+                                          <p>each time Pipeline 3 successfully completes (SCM 2)</p>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </section>
+				</section>
 
 <!-- 					<section>
 						<h2>Fragment Styles</h2>
