@@ -73,6 +73,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     common_network_config box
     config.vm.hostname = "#{`whoami`.strip}-ci-server"
+    config.vm.network "forwarded_port", guest: 8153, host: 8153
+    config.vm.network "forwarded_port", guest: 8154, host: 8154
 
     box.vm.provider "virtualbox" do |v|
       v.memory = 1024
@@ -113,6 +115,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       common_puppet_config(puppet)
       puppet.facter = {
           "machine_role" => "log_stash_server"
+      }
+    end
+  end
+
+  config.vm.define 'monitoring' do |box|
+    box.vm.box = BOX
+    box.vm.box_check_update = false
+
+    common_network_config box
+    config.vm.hostname = "#{`whoami`.strip}-monitoring"
+
+    box.vm.provision "puppet" do |puppet|
+      common_puppet_config(puppet)
+      puppet.facter = {
+          "machine_role" => "monitoring_server"
       }
     end
   end

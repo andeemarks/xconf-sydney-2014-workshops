@@ -4,6 +4,6 @@ class role::client_app {
   include tw_collectd
 #  include ruby::v2
 
-  Class['common']->Class['apache']
+  Package['mailcap']->Package['epel-release-6-8']
   Class['common']->Class['tw_collectd']
 }

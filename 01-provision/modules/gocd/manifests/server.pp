@@ -3,7 +3,7 @@ class gocd::server {
 	include common
 	include jdk7
 
-	$packages_dir = $common::packages_dir
+        $packages_dir = $common::packages_dir
 
 	$version = '14.2.0-377'
 	$package_name = "go-server-${version}"
@@ -27,10 +27,12 @@ class gocd::server {
 	service { 'go-server':
 		enable => true,
 		ensure => running,
-		require => [ 
-			Package[$package_name], 
-			Class['jdk7'], 
+		require => [
+			Package[$package_name],
+			Class['jdk7'],
 			File_line['Set JAVA_HOME for go server'],
 		],
 	}
+
+      package { "git":}
 }
