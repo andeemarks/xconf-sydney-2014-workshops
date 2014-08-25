@@ -73,6 +73,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     common_network_config box
     config.vm.hostname = "#{`whoami`.strip}-ci-server"
+    config.vm.network "forwarded_port", guest: 8153, host: 8153
+    config.vm.network "forwarded_port", guest: 8154, host: 8154
 
     box.vm.provider "virtualbox" do |v|
       v.memory = 1024
