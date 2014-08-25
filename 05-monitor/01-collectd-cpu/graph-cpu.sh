@@ -1,6 +1,7 @@
 #!/usr/bin/sh
 
 HOST=`uname -n`
+RRD_DIR="/opt/collectd/var/lib/collectd/rrd"
 
 #-s 'end-115m' -e '1303070963' -w '445' -h '150' \
 /usr/bin/rrdtool graph - -a PNG --full-size-mode \
@@ -14,37 +15,37 @@ HOST=`uname -n`
 	'100' \
 	'-t' \
 	"$HOST/cpu-0/cpu" \
-	"DEF:idle_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-idle.rrd:value:MIN" \
-	"DEF:idle_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-idle.rrd:value:AVERAGE" \
-	"DEF:idle_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-idle.rrd:value:MAX" \
+	"DEF:idle_min=/$RRD_DIR/$HOST/cpu-0/cpu-idle.rrd:value:MIN" \
+	"DEF:idle_avg=/$RRD_DIR/$HOST/cpu-0/cpu-idle.rrd:value:AVERAGE" \
+	"DEF:idle_max=/$RRD_DIR/$HOST/cpu-0/cpu-idle.rrd:value:MAX" \
 	'CDEF:idle_nnl=idle_avg,UN,0,idle_avg,IF' \
-	"DEF:wait_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-wait.rrd:value:MIN" \
-	"DEF:wait_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-wait.rrd:value:AVERAGE" \
-	"DEF:wait_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-wait.rrd:value:MAX" \
+	"DEF:wait_min=/$RRD_DIR/$HOST/cpu-0/cpu-wait.rrd:value:MIN" \
+	"DEF:wait_avg=/$RRD_DIR/$HOST/cpu-0/cpu-wait.rrd:value:AVERAGE" \
+	"DEF:wait_max=/$RRD_DIR/$HOST/cpu-0/cpu-wait.rrd:value:MAX" \
 	"CDEF:wait_nnl=wait_avg,UN,0,wait_avg,IF" \
-	"DEF:nice_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-nice.rrd:value:MIN" \
-	"DEF:nice_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-nice.rrd:value:AVERAGE" \
-	"DEF:nice_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-nice.rrd:value:MAX" \
+	"DEF:nice_min=/$RRD_DIR/$HOST/cpu-0/cpu-nice.rrd:value:MIN" \
+	"DEF:nice_avg=/$RRD_DIR/$HOST/cpu-0/cpu-nice.rrd:value:AVERAGE" \
+	"DEF:nice_max=/$RRD_DIR/$HOST/cpu-0/cpu-nice.rrd:value:MAX" \
 	'CDEF:nice_nnl=nice_avg,UN,0,nice_avg,IF' \
-	"DEF:user_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-user.rrd:value:MIN" \
-	"DEF:user_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-user.rrd:value:AVERAGE" \
-	"DEF:user_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-user.rrd:value:MAX" \
+	"DEF:user_min=/$RRD_DIR/$HOST/cpu-0/cpu-user.rrd:value:MIN" \
+	"DEF:user_avg=/$RRD_DIR/$HOST/cpu-0/cpu-user.rrd:value:AVERAGE" \
+	"DEF:user_max=/$RRD_DIR/$HOST/cpu-0/cpu-user.rrd:value:MAX" \
 	'CDEF:user_nnl=user_avg,UN,0,user_avg,IF' \
-	"DEF:system_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-system.rrd:value:MIN" \
-	"DEF:system_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-system.rrd:value:AVERAGE" \
-	"DEF:system_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-system.rrd:value:MAX" \
+	"DEF:system_min=/$RRD_DIR/$HOST/cpu-0/cpu-system.rrd:value:MIN" \
+	"DEF:system_avg=/$RRD_DIR/$HOST/cpu-0/cpu-system.rrd:value:AVERAGE" \
+	"DEF:system_max=/$RRD_DIR/$HOST/cpu-0/cpu-system.rrd:value:MAX" \
 	'CDEF:system_nnl=system_avg,UN,0,system_avg,IF' \
-	"DEF:softirq_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-softirq.rrd:value:MIN"\
-	"DEF:softirq_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-softirq.rrd:value:AVERAGE"\
-	"DEF:softirq_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-softirq.rrd:value:MAX" \
+	"DEF:softirq_min=/$RRD_DIR/$HOST/cpu-0/cpu-softirq.rrd:value:MIN"\
+	"DEF:softirq_avg=/$RRD_DIR/$HOST/cpu-0/cpu-softirq.rrd:value:AVERAGE"\
+	"DEF:softirq_max=/$RRD_DIR/$HOST/cpu-0/cpu-softirq.rrd:value:MAX" \
 	'CDEF:softirq_nnl=softirq_avg,UN,0,softirq_avg,IF' \
-	"DEF:interrupt_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-interrupt.rrd:value:MIN" \
-	"DEF:interrupt_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-interrupt.rrd:value:AVERAGE" \
-	"DEF:interrupt_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-interrupt.rrd:value:MAX" \
+	"DEF:interrupt_min=/$RRD_DIR/$HOST/cpu-0/cpu-interrupt.rrd:value:MIN" \
+	"DEF:interrupt_avg=/$RRD_DIR/$HOST/cpu-0/cpu-interrupt.rrd:value:AVERAGE" \
+	"DEF:interrupt_max=/$RRD_DIR/$HOST/cpu-0/cpu-interrupt.rrd:value:MAX" \
 	'CDEF:interrupt_nnl=interrupt_avg,UN,0,interrupt_avg,IF' \
-	"DEF:steal_min=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-steal.rrd:value:MIN" \
-	"DEF:steal_avg=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-steal.rrd:value:AVERAGE" \
-	"DEF:steal_max=/var/lib/collectd/rrd/$HOST/cpu-0/cpu-steal.rrd:value:MAX" \
+	"DEF:steal_min=/$RRD_DIR/$HOST/cpu-0/cpu-steal.rrd:value:MIN" \
+	"DEF:steal_avg=/$RRD_DIR/$HOST/cpu-0/cpu-steal.rrd:value:AVERAGE" \
+	"DEF:steal_max=/$RRD_DIR/$HOST/cpu-0/cpu-steal.rrd:value:MAX" \
 	'CDEF:steal_nnl=steal_avg,UN,0,steal_avg,IF' \
 	'CDEF:steal_stk=steal_nnl' \
 	'CDEF:interrupt_stk=interrupt_nnl,steal_stk,+' \
