@@ -6,6 +6,9 @@
 # description: Riemann
 # processname: riemann
 
+# Source function library.
+. /etc/init.d/functions
+
 riemann_bin="/opt/riemann/bin/riemann"
 riemann_conf="<%= @config_file %>"
 riemann_log="/var/log/riemann/riemann.log"
@@ -27,7 +30,12 @@ start () {
       echo "Log dir ${LOG_DIR} doesn't exist. Creating"
       mkdir $LOG_DIR
     fi
-    nohup su --login <%= @user %> nice ${NICE_LEVEL} ${riemann_bin} ${riemann_conf} >  ${riemann_log} &
+    #nohup su --login <%= @user %> "${riemann_bin} ${riemann_conf}" >  ${riemann_log} &
+    echo -n $"Starting ${riemann_bin}: "
+    daemon ${riemann_bin} ${riemann_conf} &
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
 }
 
 stop () {
