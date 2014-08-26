@@ -1,5 +1,5 @@
 class role::monitoring {
-  include ruby::v2
+  include ruby::v193
   include common
   include tw_riemann
 
