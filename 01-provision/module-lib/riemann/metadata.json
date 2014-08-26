@@ -1,0 +1,37 @@
+{
+  "name": "garethr-riemann",
+  "version": "0.5.4",
+  "author": "garethr",
+  "summary": "Module to manage the Riemann monitoring tool",
+  "license": "Apache License, Version 2.0",
+  "source": "git://github.com/garethr/garethr/garethr-riemann",
+  "project_page": "https://github.com/garethr/garethr-riemann",
+  "issues_url": "https://github.com/garethr/garethr/garethr-riemann/issues",
+  "types": [
+  
+  ],
+  "checksums": {
+  },
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib"
+    },
+    {
+      "name": "puppetlabs/wget"
+    },
+    {
+      "name": "puppetlabs/gcc"
+    },
+    {
+      "name": "puppetlabs/java"
+    },
+    {
+      "name": "stahma/epel"
+    },
+    {"name":"maestrodev/wget"},
+    {"name":"puppetlabs/gcc"},
+    {"name":"puppetlabs/java"},
+    {"name":"puppetlabs/stdlib"},
+    {"name":"stahnma/epel"}
+  ]
+}
