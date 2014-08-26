@@ -1,12 +1,16 @@
 class tw_riemann { 
 
   class { '::riemann' : 
-    host  =>  '0.0.0.0'
+    host  =>  '0.0.0.0',
+    user => 'vagrant'
   } ->
   class { '::riemann::dash' :
-  } ->
-  class { '::riemann::tools' :
+    host => '0.0.0.0',
+    user => 'vagrant' 
   }
+ # ->
+ # class { '::riemann::tools' :
+ # }
 }
 
   

@@ -10,11 +10,11 @@
 
 ## collectd configuration
 
->guest$ ls /etc/collectd.d/*
+>guest$ ls /opt/collectd/etc/collectd.d/*
 
 ## checkout round robin database holding cpu stats
 
-> /var/lib/collectd/rrd round robin database files
+> /opt/collectd/var/lib/collectd/rrd round robin database files
 
 ## Lets checkout the data collected locally - a simple ugly graph
 
@@ -28,5 +28,4 @@ on teh host run
 >01-provision$ ./05-monitor/scripts/vagrant-scp.sh vagrant@client-app:~/graph-cpu.png ../05-monitor/01-collectd-cpu/graph-cpu.png
 
 >01-provision$ open ../05-monitor/01-collectd-cpu/graph-cpu.png
-
 
