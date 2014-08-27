@@ -1,19 +1,31 @@
-== Checkout collectd installation on the guest machine
+# Lets stress the cpu on the target machine
 
-  * /etc/collectd.d/* configuration
-  * /var/lib/collectd/rrd round robin database files
+>guest$ stress --cpu 8
 
-== Stress the system
-  * stress --cpu 8
+# Check out collectd installation on the target machine
 
-== Product a graph to check out what's being captured
+## running as a daemon
 
-  ../05-monitor/scripts/vagrant-scp.sh ../05-monitor/01-collectd-cpu/graph-cpu.sh vagrant@client-app:~
+>guest$ sudo service collectd status
 
-  on the target machine run
-  sh graph-cpu.sh > graph-cpu.png
+## collectd configuration
 
-  ./05-monitor/scripts/vagrant-scp.sh vagrant@client-app:~/graph-cpu.png ../05-monitor/01-collectd-cpu/graph-cpu.png
-  open ../05-monitor/01-collectd-cpu/graph-cpu.png
+>guest$ ls /opt/collectd/etc/collectd.d/*
 
+## checkout round robin database holding cpu stats
+
+> /opt/collectd/var/lib/collectd/rrd round robin database files
+
+## Lets checkout the data collected locally - a simple ugly graph
+
+on the host run:
+> 01-provision$ ../05-monitor/scripts/vagrant-scp.sh ../05-monitor/01-collectd-cpu/graph-cpu.sh vagrant@client-app:~
+
+on the target machine run:
+>~$ sh graph-cpu.sh > graph-cpu.png
+
+on teh host run
+>01-provision$ ./05-monitor/scripts/vagrant-scp.sh vagrant@client-app:~/graph-cpu.png ../05-monitor/01-collectd-cpu/graph-cpu.png
+
+>01-provision$ open ../05-monitor/01-collectd-cpu/graph-cpu.png
 
