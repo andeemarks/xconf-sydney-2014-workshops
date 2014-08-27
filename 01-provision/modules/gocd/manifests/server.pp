@@ -33,6 +33,4 @@ class gocd::server {
 			File_line['Set JAVA_HOME for go server'],
 		],
 	}
-
-      package { "git":}
 }
