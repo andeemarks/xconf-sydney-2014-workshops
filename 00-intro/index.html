@@ -111,7 +111,7 @@
 						<ul>
 							<li>Laptop with Vagrant/Virtual Box installed</li>
 							<li>Connection to TW Data</li>
-							<li>Access to smb://sydfs02/shared/TWA Misc/XCONF 2014 (OKTA credentials)</li>
+							<li>Access to "<code>smb://sydfs02/shared/TWA Misc/XCONF 2014</code>" (OKTA credentials)</li>
 						</ul>
 					</section>
 					<section>
@@ -132,10 +132,10 @@ vagrant up && vagrant ssh
 						<h2>What's in the Box?</h2>
 						<ul>
 							<li>Centos 6.5</li>
-							<li>Golang 1.2.2</li>
-							<li>FPM 1.2.0</li>
-							<li>Git 1.7.1</li>
-							<li>Apache 2.2.15</li>
+							<li>Golang</li>
+							<li>FPM</li>
+							<li>Git</li>
+							<li>Apache</li>
 						</ul>
 					</section>		
 					<section>
@@ -149,7 +149,9 @@ git clone https://github.com/andeemarks/xconf-go-svc.git
 						<pre><code data-trim class="bash">
 # Build service
 cd xconf-go-svc
+# Install dependencies
 godep restore
+# Compile and build binary
 go install
 						</code></pre>
 						<pre><code data-trim class="bash">
@@ -163,24 +165,14 @@ go test
 # Start service
 cd $GOPATH/bin
 ./xconf-go-svc &
+# => Startup message goodness
 						</code></pre>
 						<pre><code data-trim class="bash">
 # Smoke test
 curl localhost:8080/apidocs.json
+# => JSON goodness
 						</code></pre>
 
-						<pre><code data-trim class="json">
-{												
-  "apiVersion": "",
-  "swaggerVersion": "1.2",
-  "apis": [
-   {
-    "path": "/users",
-    "description": ""
-   }
-  ]
- }
-						</code></pre>
 					</section>
 					<section>
 					<h2>Front-end service</h2>
@@ -191,7 +183,7 @@ sudo git clone https://github.com/andeemarks/xconf-svc-client.git
 						</code></pre>
 						<pre><code data-trim class="bash">
 # Smoke test
-curl -I http://localhost/xconf-svc-client/
+curl -I -L http://localhost/xconf-svc-client/
 # => HTTP/1.1 200 OK
 						</code></pre>
 					</section>
