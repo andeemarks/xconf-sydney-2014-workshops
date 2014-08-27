@@ -42,3 +42,4 @@ download_if_required "http://download.go.cd/gocd-rpm/go-agent-14.2.0-377.noarch.
 download_if_required "http://download.go.cd/gocd-rpm/go-server-14.2.0-377.noarch.rpm" aa00b28cf6ac9a74d38805d5975e6774
 download_if_required "https://www.dropbox.com/s/ybvwo9r3r68fh0x/jdk-7u67-linux-x64.rpm" 3209c90d10ca86e5c384f3aa6ad25bba
 download_if_required "https://storage.googleapis.com/golang/go1.3.1.linux-amd64.tar.gz" c91847e63449d982f53ba94bacc99d50
+download_if_required "https://www.dropbox.com/s/xpdtuw41l4blsfh/ruby-1.9.3p484-2.el6.x86_64.rpm" 2b22f8db8f802987d1ecd7fd4bf4e111
