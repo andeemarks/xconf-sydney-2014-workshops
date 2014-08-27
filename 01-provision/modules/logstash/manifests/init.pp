@@ -17,14 +17,14 @@ class logstash{
 	}
 
 
-	$package_name = 'elasticsearch-1.1.1.noarch'
-	$rpm_name = "elasticsearch-1.1.1.noarch.rpm"
-	$rpm_path = "${packages_dir}/${rpm_name}"
+	$elasticsearch_name = 'elasticsearch-1.1.1.noarch'
+	$elasticsearch_rpm = "elasticsearch-1.1.1.noarch.rpm"
+	$elasticsearch_path = "${packages_dir}/${elasticsearch_rpm}"
 
 	package { 'elasticsearch-1.1.1.noarch':
 		ensure => installed,
 		provider => 'rpm',
-		source => $rpm_path,
+		source => $elasticsearch_path,
 	}	
 
 }
