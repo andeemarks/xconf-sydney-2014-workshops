@@ -115,6 +115,12 @@
 						</ul>
 					</section>
 					<section>
+						<h2>Overview</h2>
+						<ul>
+							<li>[Insert picture here :-)]</li>
+						</ul>	
+					</section>
+					<section>
 						<h2>Install developer box</h2>
 						<pre><code data-trim class="bash">
 # Copy Vagrant stuff for dev box
@@ -175,7 +181,7 @@ curl localhost:8080/apidocs.json
 
 					</section>
 					<section>
-					<h2>Front-end service</h2>
+					<h2>Front-end client</h2>
 						<pre><code data-trim class="bash">
 # Clone repo
 cd /var/www/html
@@ -186,6 +192,11 @@ sudo git clone https://github.com/andeemarks/xconf-svc-client.git
 curl -I -L http://localhost/xconf-svc-client/
 # => HTTP/1.1 200 OK
 						</code></pre>
+					</section>
+					<section>
+					<h2>System Test</h2>
+						<h4><code>http://localhost:8000/xconf-svc-client</code></h4>
+						<img src="img/front-end-ui.png">
 					</section>
 				</section>
 
