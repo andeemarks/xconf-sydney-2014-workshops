@@ -2,7 +2,7 @@ class logstash{
 
 	include common
 
-	package { 'java-1.6.0-openjdk': ensure => present }
+	package { 'java-1.6.0-openjdk': ensure => installed }
 
 	$packages_dir = $common::packages_dir
 
@@ -15,5 +15,16 @@ class logstash{
 		provider => 'rpm',
 		source => $rpm_path,
 	}
+
+
+	$package_name = 'elasticsearch-1.1.1.noarch'
+	$rpm_name = "elasticsearch-1.1.1.noarch.rpm"
+	$rpm_path = "${packages_dir}/${rpm_name}"
+
+	package { 'elasticsearch-1.1.1.noarch':
+		ensure => installed,
+		provider => 'rpm',
+		source => $rpm_path,
+	}	
 
 }

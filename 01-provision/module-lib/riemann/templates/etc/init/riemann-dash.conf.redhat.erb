@@ -13,6 +13,9 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
+# Source ruby 193
+. /opt/ruby/ruby193/env.sh
+
 SVC_USER=<%= @user %>
 
 DAEMON=<%= @gem_path %>riemann-dash
