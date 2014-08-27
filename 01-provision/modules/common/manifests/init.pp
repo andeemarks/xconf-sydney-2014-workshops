@@ -5,7 +5,7 @@ class common {
     umask => 0022,
   }
 
-  package { ['avahi', 'avahi-tools']:
+  package { ['avahi', 'avahi-tools', 'nss-mdns']:
     ensure => installed
   }
   ->
