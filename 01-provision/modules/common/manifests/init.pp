@@ -29,4 +29,6 @@ class common {
   }
 
   package { "git":}
+
+  include common::vagrant_private_key
 }
