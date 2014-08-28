@@ -10,6 +10,8 @@ class gocd::agent {
   $package_name = "go-agent-${version}"
   $binary_name = "${package_name}.noarch.rpm"
   $binary_path = "${packages_dir}/${binary_name}"
+  $username = regsubst($hostname,'^(.*?)-.*', '\1')
+  $go_server = "${username}-ci-server.local"
 
   package { $package_name:
     ensure => installed,
@@ -17,12 +19,12 @@ class gocd::agent {
     source => $binary_path,
   }
 
-  file_line { 'Set JAVA_HOME for go agent':
-    path  => '/etc/default/go-agent',
-    line  => 'JAVA_HOME=/usr/java/default',
-    match => '^JAVA_HOME=.*',
+  file { "/etc/default/go-agent":
+    ensure => present,
+    content => template("gocd/go-agent.erb"),
+    subscribe => Package[$package_name],
     require => Package[$package_name],
-    notify => Service['go-agent'],
+    notify => Service["go-agent"]
   }
 
   service { 'go-agent':
@@ -31,8 +33,13 @@ class gocd::agent {
     require => [
       Package[$package_name],
       Class['jdk7'],
-      File_line['Set JAVA_HOME for go agent'],
+      File["/etc/default/go-agent"],
     ],
   }
+
+  package {"ruby-devel": }
+  ->
+  package { "fpm": provider => "gem" }
+  package { 'rpm-build': }
 
 }

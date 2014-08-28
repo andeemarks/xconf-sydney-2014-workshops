@@ -27,4 +27,6 @@ class common {
   package { 'libyaml':
     ensure => present,
   }
+
+  package { "git":}
 }

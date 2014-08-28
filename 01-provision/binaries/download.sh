@@ -42,4 +42,6 @@ download_if_required "http://download.go.cd/gocd-rpm/go-agent-14.2.0-377.noarch.
 download_if_required "http://download.go.cd/gocd-rpm/go-server-14.2.0-377.noarch.rpm" aa00b28cf6ac9a74d38805d5975e6774
 download_if_required "https://www.dropbox.com/s/ybvwo9r3r68fh0x/jdk-7u67-linux-x64.rpm" 3209c90d10ca86e5c384f3aa6ad25bba
 download_if_required "https://storage.googleapis.com/golang/go1.3.1.linux-amd64.tar.gz" c91847e63449d982f53ba94bacc99d50
-download_if_required "https://www.dropbox.com/s/xpdtuw41l4blsfh/ruby-1.9.3p484-2.el6.x86_64.rpm" 2b22f8db8f802987d1ecd7fd4bf4e111
+download_if_required "https://download.elasticsearch.org/logstash/logstash/packages/centos/logstash-1.4.2-1_2c0f5a1.noarch.rpm" 1db9f0864ff4b89380b39c39bc419031
+download_if_required "http://packages.elasticsearch.org/logstashforwarder/centos/logstash-forwarder-0.3.1-1.x86_64.rpm" 4101205b8e9fab6641a114a596ae1493
+download_if_required "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.noarch.rpm" c8ffe8eb96740e2e77f6f7dde467b67e 
