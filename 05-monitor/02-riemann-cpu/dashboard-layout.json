@@ -1,0 +1,69 @@
+{
+  "server": "192.168.1.110:5556",
+  "server_type": "ws",
+  "workspaces": [
+    {
+      "name": "Riemann",
+      "view": {
+        "type": "Balloon",
+        "weight": 1,
+        "id": "87587d1034490a9b3429971df10d8084f5a42a37",
+        "version": 39,
+        "child": {
+          "type": "VStack",
+          "weight": 1,
+          "id": "c0bbf42c42c02b5e46619c39cdc322acb91047d3",
+          "version": 39,
+          "children": [
+            {
+              "type": "HStack",
+              "weight": 1,
+              "id": "81a8b6e672646788455afa2eba74de9ceffc3346",
+              "version": 27,
+              "children": [
+                {
+                  "type": "TimeSeries",
+                  "weight": 1,
+                  "id": "abb305f5a87fac41101d99159c12924a227a1a97",
+                  "version": 1,
+                  "title": "CPU",
+                  "delay": "5",
+                  "speed": "10",
+                  "query": "(service ~= \"cpu\")",
+                  "opacity": "",
+                  "lineWidth": "100"
+                },
+                {
+                  "type": "Gauge",
+                  "weight": 1,
+                  "id": "a52917e0eb3ae7a3efd3c65f05826d7dfb452253",
+                  "version": 20,
+                  "title": "The number of hosts",
+                  "query": "(service = \"distinct hosts\")",
+                  "commaSeparateThousands": "on"
+                },
+                {
+                  "type": "Grid",
+                  "weight": 1,
+                  "id": "cfa853c315c99ebb49f669e15c13bb1081c75522",
+                  "version": 18,
+                  "title": "The CPU",
+                  "query": "true",
+                  "max": "all",
+                  "rows": "service",
+                  "cols": "host",
+                  "row_sort": "metric",
+                  "col_sort": "metric"
+                }
+              ]
+            },
+            {
+              "type": "Help"
+            }
+          ]
+        }
+      },
+      "id": "83f8597cc147818527e0257f596b273ff6c82924"
+    }
+  ]
+}

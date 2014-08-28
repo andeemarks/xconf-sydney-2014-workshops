@@ -58,7 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     box.vm.box_check_update = false
 
     common_network_config box
-    config.vm.hostname = "#{`whoami`.strip}-web-service"
+    config.vm.hostname = "#{`whoami`.strip}-web-service.local"
 
     box.vm.provision "puppet" do |puppet|
       common_puppet_config(puppet)

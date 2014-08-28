@@ -13,7 +13,7 @@ class tw_collectd () {
   $recurse          = undef
 
   $riemann_port     = 5555
-  $riemann_host     = "${uname}-monitoring"
+  $riemann_host     = "${uname}-monitoring.local"
   $protocol         = 'UDP'
   $store_rates      = false
   $always_append_ds = false
