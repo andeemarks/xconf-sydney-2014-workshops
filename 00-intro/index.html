@@ -41,7 +41,9 @@
 			<div class="slides">
 				<section>
 					<h1>XConf</h1>
-					<h2>Introduction</h2>
+					<p>
+						<small><code>https://github.com/andeemarks/xconf-sydney-2014-workshops</code></small>
+					</p>
 					<p>
 						<small>Andy Marks / @andeemarks</small>
 					</p>
@@ -115,10 +117,11 @@
 						</ul>
 					</section>
 					<section>
-						<h2>Overview</h2>
-						<ul>
-							<li>[Insert picture here :-)]</li>
-						</ul>	
+						<h2>What are we going to do?</h2>
+						<blockquote>
+							Use a pre-baked Vagrant image to launch a sandbox VM,
+							and test the two codebases we'll be working with today.
+						</blockquote>
 					</section>
 					<section>
 						<h2>A little note about Security</h2>
@@ -149,22 +152,15 @@ vagrant up && vagrant ssh
 						<ul>
 							<li>Centos 6.5</li>
 							<li>Golang</li>
-							<li>FPM</li>
-							<li>Git</li>
 							<li>Apache</li>
+							<li>FPM</li>
 						</ul>
 					</section>		
 					<section>
 					<h2>Back-end service</h2>
+						<h4><code>github.com/andeemarks/xconf-go-svc.git</code></h4>
 						<pre><code data-trim class="bash">
-# Clone repo
-mkdir -p $GOPATH/src/github.com/andeemarks
-cd $GOPATH/src/github.com/andeemarks
-git clone https://github.com/andeemarks/xconf-go-svc.git
-						</code></pre>
-						<pre><code data-trim class="bash">
-# Build service
-cd xconf-go-svc
+cd $GOPATH/src/github.com/andeemarks/xconf-go-svc
 # Install dependencies
 godep restore
 # Compile and build binary
@@ -192,11 +188,7 @@ curl localhost:8080/apidocs.json
 					</section>
 					<section>
 					<h2>Front-end client</h2>
-						<pre><code data-trim class="bash">
-# Clone repo
-cd /var/www/html
-sudo git clone https://github.com/andeemarks/xconf-svc-client.git
-						</code></pre>
+						<h4><code>github.com/andeemarks/xconf-svc-client.git</code></h4>
 						<pre><code data-trim class="bash">
 # Smoke test
 curl -I -L http://localhost/xconf-svc-client/
@@ -205,11 +197,15 @@ curl -I -L http://localhost/xconf-svc-client/
 					</section>
 					<section>
 					<h2>System Test</h2>
-						<h4><code>http://localhost:8000/xconf-svc-client</code></h4>
+						<ul><li><code>http://amarks-dev-box.local/xconf-svc-client</code></li></ul>
 						<img src="img/front-end-ui.png">
 					</section>
 				</section>
 
+				<section>
+					<h2>What did we just do?</h2>
+					<img src="img/overview.png">
+				</section>
 				<section>
 					<h2>Next Steps</h2>
 					<p>
