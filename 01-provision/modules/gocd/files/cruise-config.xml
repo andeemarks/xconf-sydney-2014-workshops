@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="72">
+  <server artifactsdir="artifacts" commandRepositoryLocation="default" serverId="401dd6e4-aacb-4cdb-8de4-493fbe4e7ea2" />
+  <pipelines group="xconf">
+    <pipeline name="xconf-go-svc">
+      <materials>
+        <git url="https://github.com/andeemarks/xconf-go-svc.git" />
+      </materials>
+      <stage name="Unit_Test">
+        <jobs>
+          <job name="Unit_Test">
+            <tasks>
+              <exec command="./scripts/test.sh" />
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="BuildAndPackage">
+        <jobs>
+          <job name="BuildAndPackage">
+            <tasks>
+              <exec command="make">
+                <arg>package</arg>
+              </exec>
+            </tasks>
+            <artifacts>
+              <artifact src="dist/*.rpm" dest="xconf-svc-artifacts" />
+            </artifacts>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
+    <pipeline name="xconf-svc-client">
+      <materials>
+        <git url="https://github.com/andeemarks/xconf-svc-client.git" />
+      </materials>
+      <stage name="Build_client">
+        <jobs>
+          <job name="Build_client_Romit">
+            <tasks>
+              <exec command="mkdir" args="-p dist" />
+              <exec command="tar" args="--exclude='./dist' -zcvf dist/xconf-svc-client.tgz ." />
+            </tasks>
+            <artifacts>
+              <artifact src="dist/xconf-svc-client.tgz" dest="xconf-svc-client-artifacts" />
+            </artifacts>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
+  </pipelines>
+</cruise>
+

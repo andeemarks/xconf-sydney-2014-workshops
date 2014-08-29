@@ -32,10 +32,33 @@ class gocd::agent {
     enable => true,
     ensure => running,
     require => [
-      Package[$package_name],
-      Class['jdk7'],
-      File["/etc/default/go-agent"],
-    ],
+                Package[$package_name],
+                Class['jdk7'],
+                File["/etc/default/go-agent"],
+                ],
+  }
+  ->
+  file { '/var/go/.ssh':
+    ensure => directory,
+    owner => 'go',
+    group => 'go',
+    mode => 0700,
+  }
+
+  file { '/var/go/.ssh/id_rsa':
+    ensure => file,
+    owner => 'go',
+    group => 'go',
+    mode => 0400,
+    source => 'puppet:///modules/common/vagrant/id_rsa',
+  }
+  ->
+  file { '/var/go/.ssh/config':
+    ensure => file,
+    owner => 'go',
+    group => 'go',
+    mode => 0400,
+    source => 'puppet:///modules/common/vagrant/config',
   }
 
   package {"ruby-devel": }
@@ -44,4 +67,4 @@ class gocd::agent {
   package { "bundle": provider => "gem" }
   package { 'rpm-build': }
 
-}
+  }
