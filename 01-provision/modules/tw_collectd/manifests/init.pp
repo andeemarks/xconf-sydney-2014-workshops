@@ -14,7 +14,7 @@ class tw_collectd () {
 
   $riemann_port     = 5555
   $riemann_host     = "${uname}-monitoring.local"
-  $protocol         = 'UDP'
+  $protocol         = 'TCP'
   $store_rates      = false
   $always_append_ds = false
 
@@ -62,28 +62,7 @@ class tw_collectd () {
 
 }
 
-    
-
- # class { 'collectd::plugin::rrdtool':
- #   order             => '30',
- #   datadir           => '/var/lib/collectd/rrd',
- #   createfilesasync  => false,
- #   rrarows           => 1200,
- #   rratimespan       => [3600, 86400, 604800, 2678400, 31622400],
- #   xff               => 0.1,
- #   cacheflush        => 900,
- #   cachetimeout      => 120,
- #   writespersecond   => 50
-
- # }
-
- # # TODO zhamak: fix the host name when we have host->ip mapping
- # class { 'collectd::plugin::write_riemann':
- #   order        => '40',
- #   riemann_host => `whoami`-monitoring.local,
- #   riemann_port => 5555,
- # }
-
- # package { ['collectd-apache', 'collectd-rrdtool', 'stress'] :
- #   ensure  => present
- # }
+file { '/home/vagrant/graph-cpu.json':
+  ensure => present,
+  source => 'puppet:///modules/tw_collectd/files/graph-cu.sh',
+}
