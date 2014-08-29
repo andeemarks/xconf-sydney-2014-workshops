@@ -42,7 +42,7 @@
 				<section>
 					<h1>XConf</h1>
 					<p>
-						<small><code>https://github.com/andeemarks/xconf-sydney-2014-workshops</code></small>
+						<code>https://github.com/andeemarks/xconf-sydney-2014-workshops</code>
 					</p>
 					<p>
 						<small>Andy Marks / @andeemarks</small>
@@ -115,9 +115,10 @@
 					<section>
 						<h2>Prerequisites</h2>
 						<ul>
-							<li>Laptop with Vagrant/Virtual Box installed</li>
-							<li>Connection to TW Data</li>
-							<li>Access to "<code>smb://sydfs02/shared/TWA Misc/XCONF 2014</code>" (OKTA credentials)</li>
+							<li>Vagrant 1.6.2+ installed</li>
+							<li>Virtual Box 4.3.x installed</li>
+							<li>Connection to TW Guest</li>
+							<li>Contents of the USB Drive installed</li>
 						</ul>
 					</section>
 					<section>
@@ -140,11 +141,16 @@
 					<section>
 						<h2>Install developer box</h2>
 						<pre><code data-trim class="bash">
-# Copy Vagrant stuff for dev box
 # Note: XCONF_HOME is a working folder on your host laptop
-# Note: assumes you have mounted sydfs already
 cd $XCONF_HOME 
-rsync --progress /Volumes/XCONF\ 2014/* .
+# Check pre-reqs
+vagrant version
+# => Installed Version: 1.6.3
+VBoxManage -v
+# => 4.3.14r95030
+# Have we got the files?
+ls 
+# => Vagrantfile     dev-sandbox.box
 						</code></pre>
 						<pre><code data-trim class="bash">
 # Start Vagrant
@@ -162,7 +168,7 @@ vagrant up && vagrant ssh
 					</section>		
 					<section>
 					<h2>Back-end service</h2>
-						<h4><code>github.com/andeemarks/xconf-go-svc.git</code></h4>
+						<ul><li><code>github.com/andeemarks/xconf-go-svc.git</code></li></ul>
 						<pre><code data-trim class="bash">
 cd $GOPATH/src/github.com/andeemarks/xconf-go-svc
 # Install dependencies
@@ -192,7 +198,7 @@ curl localhost:8080/apidocs.json
 					</section>
 					<section>
 					<h2>Front-end client</h2>
-						<h4><code>github.com/andeemarks/xconf-svc-client.git</code></h4>
+						<ul><li><code>github.com/andeemarks/xconf-svc-client.git</code></li></ul>
 						<pre><code data-trim class="bash">
 # Smoke test
 curl -I -L http://localhost/xconf-svc-client/
