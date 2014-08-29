@@ -38,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'client-app' do |box|
-    box.vm.box = BOX
+    box.vm.box = "client-app.box"
     box.vm.box_check_update = false
 
     common_network_config box
@@ -54,7 +54,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'web-service' do |box|
-    box.vm.box = BOX
+    box.vm.box = "web-service.box"
     box.vm.box_check_update = false
 
     common_network_config box
