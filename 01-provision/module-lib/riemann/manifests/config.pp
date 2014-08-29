@@ -26,6 +26,12 @@ class riemann::config {
     default: {}
   }
 
+  file { '/var/lib/riemann-dash/layout.json':
+    ensure => present,
+    source => 'puppet:///modules/riemann/etc/layout.json',
+    owner  => $user,
+  }
+
   file { '/etc/riemann.sample.config':
     ensure => present,
     source => 'puppet:///modules/riemann/etc/riemann.config',
@@ -40,5 +46,6 @@ class riemann::config {
   file { '/var/log/riemann.log':
     owner => $user,
   }
+
 
 }

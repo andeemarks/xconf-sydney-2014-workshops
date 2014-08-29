@@ -1,0 +1,244 @@
+{
+  "server": "192.168.1.110:5556",
+  "server_type": "ws",
+  "workspaces": [
+    {
+      "name": "Riemann",
+      "view": {
+        "type": "Balloon",
+        "weight": 1,
+        "id": "87587d1034490a9b3429971df10d8084f5a42a37",
+        "version": 74,
+        "child": {
+          "type": "VStack",
+          "weight": 1,
+          "id": "c0bbf42c42c02b5e46619c39cdc322acb91047d3",
+          "version": 74,
+          "children": [
+            {
+              "type": "HStack",
+              "weight": 1,
+              "id": "81a8b6e672646788455afa2eba74de9ceffc3346",
+              "version": 59,
+              "children": [
+                {
+                  "type": "Gauge",
+                  "weight": 0.5,
+                  "id": "a52917e0eb3ae7a3efd3c65f05826d7dfb452253",
+                  "version": 24,
+                  "title": "Nmber of hosts",
+                  "query": "(service = \"host count\")",
+                  "commaSeparateThousands": "on"
+                },
+                {
+                  "type": "Flot",
+                  "weight": 1,
+                  "id": "abb305f5a87fac41101d99159c12924a227a1a97",
+                  "version": 14,
+                  "title": "Cpu utilization",
+                  "query": "(service = \"cpu utilization\")",
+                  "max": "100",
+                  "timeRange": 300,
+                  "graphType": "bar",
+                  "stackMode": "false"
+                }
+              ]
+            },
+            {
+              "type": "TimeSeries",
+              "weight": 1,
+              "id": "35baf62017779ad54e03956a922a3569c7ae46fd",
+              "version": 12,
+              "title": "Host Load",
+              "delay": "",
+              "speed": "",
+              "query": "service =~ \"%load%short%\"",
+              "opacity": "",
+              "lineWidth": "5"
+            },
+            {
+              "type": "View",
+              "weight": 1,
+              "id": "b2b31464406112a3831200cf561506e4210ef330",
+              "version": 0
+            }
+          ]
+        }
+      },
+      "id": "83f8597cc147818527e0257f596b273ff6c82924"
+    },
+    {
+      "name": "Riemann Logs",
+      "view": {
+        "type": "Balloon",
+        "weight": 1,
+        "id": "2ad468a651cc996ed138d61480766dbca48f408b",
+        "version": 9,
+        "child": {
+          "type": "VStack",
+          "weight": 1,
+          "id": "4a190e2d1379e4144767ab9b2b073830319bcf3b",
+          "version": 9,
+          "children": [
+            {
+              "type": "Title",
+              "weight": 1,
+              "id": "da2452d7330a7613e103daf1bc2efb3eccdaa2a6",
+              "version": 5,
+              "title": "Riemann Logs"
+            },
+            {
+              "type": "Log",
+              "weight": 4,
+              "id": "64f826e6e826a66751607ddebeba497fd4e775cb",
+              "version": 4,
+              "title": "Log",
+              "query": "true",
+              "lines": "1000"
+            },
+            {
+              "type": "Help"
+            }
+          ]
+        }
+      },
+      "id": "ea12dff1d3066c5da18b0d7d23eedc414e335076"
+    },
+    {
+      "name": "All Events",
+      "view": {
+        "type": "Balloon",
+        "weight": 1,
+        "id": "d15376cde0d26d485a8ce71342661a6a55006cc5",
+        "version": 23,
+        "child": {
+          "type": "VStack",
+          "weight": 1,
+          "id": "0ace0c17a20ed6ef98ba4110eef49549d55c31cd",
+          "version": 23,
+          "children": [
+            {
+              "type": "HStack",
+              "weight": 2,
+              "id": "3ea26e764b4894f949f5ea93f53f8789bfa25b11",
+              "version": 19,
+              "children": [
+                {
+                  "type": "VStack",
+                  "weight": 1,
+                  "id": "fbb9c121619b1f53a549122f9f740b221d502daf",
+                  "version": 10,
+                  "children": [
+                    {
+                      "type": "Grid",
+                      "weight": 1,
+                      "id": "bf88fd0e233e4c53c8559a9230f1d52d137befe6",
+                      "version": 1,
+                      "title": "Load",
+                      "query": "service =~ \"%load%\"",
+                      "max": "",
+                      "rows": "",
+                      "cols": "",
+                      "row_sort": "lexical",
+                      "col_sort": "lexical"
+                    },
+                    {
+                      "type": "Grid",
+                      "weight": 1,
+                      "id": "2ba2a923a5788b4e63d4562bbebe5f6a08799792",
+                      "version": 7,
+                      "title": "CPU Events",
+                      "query": "service =~ \"%cpu-%\"",
+                      "max": "",
+                      "rows": "service",
+                      "cols": "host",
+                      "row_sort": "lexical",
+                      "col_sort": "lexical"
+                    },
+                    {
+                      "type": "HStack",
+                      "weight": 1,
+                      "id": "50ea14f3b9084bfefdd96672914ac79d95dac98b",
+                      "version": 2,
+                      "children": [
+                        {
+                          "type": "Grid",
+                          "weight": 1,
+                          "id": "f4530cbf8f6aed7603927e1f3092ddcdbaa58577",
+                          "version": 2,
+                          "title": "Stress Process",
+                          "query": "service =~ \"%stress%\"",
+                          "max": "",
+                          "rows": "service",
+                          "cols": "host",
+                          "row_sort": "lexical",
+                          "col_sort": "lexical"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "id": "f8ec1b34346b40fcb3ce33e62bddb414221eb8d2"
+    },
+    {
+      "name": "Help",
+      "view": {
+        "type": "Balloon",
+        "weight": 1,
+        "id": "cf1e770ecfeb161becc25930d71c027e1d6ef543",
+        "version": 0,
+        "child": {
+          "type": "VStack",
+          "weight": 1,
+          "id": "f7cf4a4b16c43d3ace61bfa556458c3111a4250e",
+          "version": 0,
+          "children": [
+            {
+              "type": "Help"
+            }
+          ]
+        }
+      },
+      "id": "2d91a00ec65e970525251ba181559780bd5e968d"
+    },
+    {
+      "name": "debug",
+      "view": {
+        "type": "Balloon",
+        "weight": 1,
+        "id": "be6beb0364e6c340c446f93fad1c105b2db5d565",
+        "version": 1,
+        "child": {
+          "type": "VStack",
+          "weight": 1,
+          "id": "203f923cf56854e3427517d8e3f0dbaafbe8d7be",
+          "version": 1,
+          "children": [
+            {
+              "type": "Grid",
+              "weight": 1,
+              "id": "66033105a259c449c2b3ce59902973b7d9aedfb8",
+              "version": 1,
+              "title": "Riemann",
+              "query": "service = \"cpu utilization\"",
+              "max": "",
+              "rows": "service",
+              "cols": "host",
+              "row_sort": "lexical",
+              "col_sort": "lexical"
+            },
+            {
+              "type": "Help"
+            }
+          ]
+        }
+      },
+      "id": "0a076124646678578bc78fd4340bc54b17b48386"
+    }
+  ]
+}
