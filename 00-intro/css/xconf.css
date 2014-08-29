@@ -5,3 +5,7 @@ table.pipelinedependencies tr {
 table.pipelinedependencies td {
     vertical-align: middle;
 }
+
+.reveal pre {
+	font-size: 0.8em;
+}
