@@ -26,10 +26,15 @@ class riemann::config {
     default: {}
   }
 
-  file { '/var/lib/riemann-dash/layout.json':
+  file { '/var/lib/riemann-dash':
+    ensure => directory,
+    path   => '/var/lib/riemann-dash'
+  } ->
+  file { 'layout.json':
     ensure => present,
+    path   => '/var/lib/riemann-dash/layout.json',
     source => 'puppet:///modules/riemann/etc/layout.json',
-    owner  => $user,
+    owner  => $user
   }
 
   file { '/etc/riemann.sample.config':
