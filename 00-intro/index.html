@@ -171,14 +171,12 @@ vagrant up && vagrant ssh
 						<ul><li><code>github.com/andeemarks/xconf-go-svc.git</code></li></ul>
 						<pre><code data-trim class="bash">
 cd $GOPATH/src/github.com/andeemarks/xconf-go-svc
-# Install dependencies
-godep restore
 # Compile and build binary
-go install
+godep go install
 						</code></pre>
 						<pre><code data-trim class="bash">
 # Run automated tests
-go test
+godep go test
 						</code></pre>
 					</section>
 					<section>
