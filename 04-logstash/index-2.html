@@ -114,15 +114,28 @@
 			</div>
 
 
+
+
+
 			<div id="part2">
 			<h2>Part 2: Setup Logstash Forwarder in client-app + web-service</h2>
 				<p>(repeat these steps on each of the machine you want to gather logs from)</p><br>
 				
 			<ol>
+			
+			<li>
+				<p>Let's start with web-service VM.</p>
+				Log in to web-service VM
+				<div class="code">
+					vagrant ssh web-service
+				</div>
+			</li>
+
 			<li>
 				Copy ssl cert from /vagrant share folder to some appropriate location
 				<div class="code">
-					<b>sudo</b> mkdir /opt/logstash-forwarder/ssl
+					<b>sudo</b> mkdir /opt/logstash-forwarder/ssl</br>
+					</br>
 					<b>sudo</b> cp /vagrant/logstash-forwarder.crt /opt/logstash-forwarder/ssl/
 				</div>
 			</li>
@@ -131,13 +144,17 @@
 				<div class="code">
 					<b>sudo</b> vim /opt/logstash-forwarder/logstash-forwarder.conf
 				</div>
+				<p>Copy the content from the sample forwarder.conf</p>
+
+				<p>Change:
 				<ul>
-				<li>Copy the content from the sample forwarder.conf</li>
-				<li>Change the ip to log-stash-server_hostname.local</li>
-				<li>Change port to the port number you are listening to in log-stash-server (we use 9876)</li>
-				<li>Change ssl ca to be the path that you have your cert (/opt/logstash-forwarder/ssl/logstash-forwarder.crt)</li>
+				<li>the ip to <i>whoami</i>-log-stash-server.local</li>
+				<li>the port to the port number you are listening to in log-stash-server (we use 9876)</li>
+				<li>the ssl_ca to be the path that you have your cert (should be in /opt/logstash-forwarder/ssl/logstash-forwarder.crt)</li>
 				<li>Depending on where you want to collect the log from, in 'files', add 'paths' and 'fields' accordingly. We will add the app-log path ( eg. In web-service, log path is "/usr/bin/xconf-go-svc.log" ) and fields ( "type" => "service-log").</li>
 				</ul>
+				</p>
+
 			</li>
 			<li>
 				<h4>Start Forwarder</h4>
@@ -163,8 +180,13 @@
 				</div>
 			</li>
 
+			<li>
+				<p>Repeat steps on client-app VM.</p>
+			</li>
 			</ol>
 			</div>
+
+
 
 
 
@@ -173,7 +195,7 @@
 			<ul><li>
 				At this time, you should be able to see the Elasticsearch output by going to 
 				<div class="code">
-					http://<your>-log-stash-server.local:9200/_search?pretty=true&size=1000
+					http://<i>whoami</i>-log-stash-server.local:9200/_search?pretty=true&size=1000
 				</div>
 			</li></ul>
 			</div>
