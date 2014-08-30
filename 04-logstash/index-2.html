@@ -69,11 +69,17 @@
 			</li>
 
 			<li>
-				Configure logstash config file, put it in /opt/logstash/
+				<p>Configure logstash config file, put it in /opt/logstash/</p>
+				
+				Copy the sample logstash server config file from /vagrant share folder
+				<div class="code">
+				<b>sudo</b> cp /vagrant/Logstash-Samples/configs/Logstash-Server-sample-config /opt/logstash/logstash-server.conf
+				</div>
+
+				Edit the config file:
 				<div class="code">
 				<b>sudo</b> vim /opt/logstash/logstash-server.conf
 				</div>
-				<p>Copy the content from the sample-logstash-server.conf
 				
 				<p>Change:
 				<ul>
@@ -81,6 +87,8 @@
 				<li>the ssl_certificate and ssl_key to point to the cert and private key we created earlier (/opt/logstash/ssl/logstash-forwarder.crt     and    /opt/logstash/ssl/logstash-forwarder.key)</li>
 				</ul>
 				</p>
+
+				<p>Notes: If you want to avoid vim, you can edit the sample file first (find it at /Logstash-Samples/configs/Logstash-Server-sample-config), and copy it to vm after you make the changes.</p>
 			</li>	
 				
 			<li>	
