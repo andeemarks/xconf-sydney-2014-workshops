@@ -2,8 +2,8 @@ class gocd::agent {
 
   include common
   include jdk7
-  include golang::devel
-  include ruby::v193
+  # include golang::devel
+  # include ruby::v193
 
   $packages_dir = $common::packages_dir
 
