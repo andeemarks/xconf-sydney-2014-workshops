@@ -50,40 +50,48 @@
 			<li>
 				Spin up log-stash-server:
 				<div class="code">
-				vagrant up log-stash-server
-				vagrant ssh log-stash-server
+				vagrant up log-stash-server</br>
+				</br>
+				vagrant ssh log-stash-server</br>
 				</div>
 				<p>When you spin up log-stash-server vm, Logstash and Elasticsearch should have been installed via puppet.</p></br>
 
 			</li>
 
 			<li>
-				Generate SSL Certificates so that vm's can talk to each other. Create a '/ssl' folder within logstash to store the created key and cert:
+				Generate SSL Certificates so that vm's can talk to each other.
+				Create a '/ssl' folder to store the created key and cert:
 				<div class="code">
-				<b>sudo</b> mkdir /opt/logstash/ssl/
-				<b>sudo</b> openssl req -x509 -batch -nodes -days 3650 -newkey rsa:2048 -keyout /opt/logstash/ssl/logstash-forwarder.key -out /opt/logstash/ssl/logstash-forwarder.crt
+				<b>sudo</b> mkdir /opt/logstash/ssl/</br>
+				</br>
+				<b>sudo</b> openssl req -x509 -batch -nodes -days 3650 -newkey rsa:2048 -keyout /opt/logstash/ssl/logstash-forwarder.key -out /opt/logstash/ssl/logstash-forwarder.crt</br>
 				</div>
 			</li>
 
 			<li>
-				Configure logstash config file, put it in /opt/logstash
+				Configure logstash config file, put it in /opt/logstash/
 				<div class="code">
 				<b>sudo</b> vim /opt/logstash/logstash-server.conf
 				</div>
 				<p>Copy the content from the sample-logstash-server.conf
-				Change port to some port number you want (we use 9876)
-				Change ssl_certificate and ssl_key to point to the cert and private key we created earlier (/opt/logstash/ssl/logstash-forwarder.crt     and    /opt/logstash/ssl/logstash-forwarder.key)</p></br>
+				
+				<p>Change:
+				<ul>
+				<li>the port to some port number you want (we use 9876)</li>
+				<li>the ssl_certificate and ssl_key to point to the cert and private key we created earlier (/opt/logstash/ssl/logstash-forwarder.crt     and    /opt/logstash/ssl/logstash-forwarder.key)</li>
+				</ul>
+				</p>
 			</li>	
 				
 			<li>	
-				Pre-step in setting up Logstash Forwarder: copy the ssl cert we generated earlier to client app vm via /vagrant share folder. To do that, copy ssl cert to /vagrant share folder:
+				For Logstash Forwarder to forward the log, it needs to have the ssl cert we generated earlier. Let's copy the cert to /vagrant share folder now:
 				<div class="code">
 				cp /opt/logstash/ssl/logstash-forwarder.crt /vagrant/
 				</div>
 			</li>
 
 			<li>
-				<h4>Start Elasticserach</h4>
+				<h4>Start Elasticsearch</h4>
 				<div class="code">
 				<b>sudo</b> nohup /usr/share/elasticsearch/bin/elasticsearch &
 				</div>
@@ -91,16 +99,16 @@
 			</li>
 
 			<li>
-				<h4>Start logstash by using this command:</h4>
+				<h4>Start Logstash</h4>
 				<div class="code"> 
 				/opt/logstash/bin/logstash -f /opt/logstash/logstash-server.conf
 				</div>
-				you'll be able to see output like following: 
+				You'll be able to see output like following: 
 				<div class="output">
 				"Using milestone 1 input plugin 'lumberjack'. This plugin should work, but would benefit from use by folks like you. Please let us know if you find bugs or have suggestions on how to improve this plugin.  For more information on plugin milestones, see http://logstash.net/docs/1.4.2-modified/plugin-milestones {:level=>:warn}
 				Using milestone 1 filter plugin 'syslog_pri'. This plugin should work, but would benefit from use by folks like you. Please let us know if you find bugs or have suggestions on how to improve this plugin.  For more information on plugin milestones, see http://logstash.net/docs/1.4.2-modified/plugin-milestones {:level=>:warn}."
 				</div>
-				But you will not see any output, because no service is outputting to logstash-server yet.
+				But you will not see any logs, because no service is outputting to log-stash-server yet.
 			</li>	
 			</ol>
 			</div>
