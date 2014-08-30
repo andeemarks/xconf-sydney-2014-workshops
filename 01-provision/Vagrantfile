@@ -61,7 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     common_network_config box
     config.vm.hostname = "#{`whoami`.strip}-web-service.local"
-    config.vm.network "forwarded_port", guest: 8080, host: 8080
+    config.vm.network "forwarded_port", guest: 8080, host: 18082
 
     box.vm.provision "puppet" do |puppet|
       common_puppet_config(puppet)
