@@ -38,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'client-app' do |box|
-    box.vm.box = BOX
+    box.vm.box = "client-app.box"
     box.vm.box_check_update = false
 
     common_network_config box
@@ -54,11 +54,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'web-service' do |box|
-    box.vm.box = BOX
+    box.vm.box = "web-service.box"
     box.vm.box_check_update = false
 
     common_network_config box
     config.vm.hostname = "#{`whoami`.strip}-web-service.local"
+    config.vm.network "forwarded_port", guest: 8080, host: 8080
 
     box.vm.provision "puppet" do |puppet|
       common_puppet_config(puppet)
@@ -70,7 +71,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'ci-server' do |box|
-    box.vm.box = BOX
+    box.vm.box = 'go-ci-server'
     box.vm.box_check_update = false
 
     common_network_config box
@@ -92,7 +93,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'ci-agent' do |box|
-    box.vm.box = BOX
+    box.vm.box = 'go-ci-agent'
     box.vm.box_check_update = false
 
     common_network_config box
@@ -107,7 +108,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'log-stash-server' do |box|
-    box.vm.box = BOX
+    box.vm.box = "log-stash-server.box"
     box.vm.box_check_update = false
 
     common_network_config box
@@ -122,7 +123,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'monitoring' do |box|
-    box.vm.box = BOX
+    box.vm.box = "monitoring.box"
     box.vm.box_check_update = false
 
     common_network_config box

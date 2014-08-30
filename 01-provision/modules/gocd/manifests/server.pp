@@ -33,4 +33,14 @@ class gocd::server {
 			File_line['Set JAVA_HOME for go server'],
 		],
 	}
+
+        file {"/etc/go/cruise-config.xml":
+          ensure => file,
+          replace => true,
+          owner => 'go',
+          group => 'go',
+          source => 'puppet:///modules/gocd/cruise-config.xml',
+          notify => Service["go-server"]
+        }
+
 }

@@ -1,9 +1,9 @@
 class common {
   $packages_dir = '/vagrant/binaries'
 
-  exec { '/vagrant/binaries/download.sh':
-    umask => 0022,
-  }
+  #exec { '/vagrant/binaries/download.sh':
+    #umask => 0022,
+  #}
 
   package { ['avahi', 'avahi-tools', 'nss-mdns']:
     ensure => installed

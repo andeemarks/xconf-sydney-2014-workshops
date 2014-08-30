@@ -26,15 +26,30 @@ class riemann::config {
     default: {}
   }
 
-  file { '/var/lib/riemann-dash/layout.json':
+  file { '/var/lib/riemann-dash':
+    ensure => directory,
+    path   => '/var/lib/riemann-dash'
+  } ->
+  file { 'layout.json':
     ensure => present,
+    path   => '/var/lib/riemann-dash/layout.json',
     source => 'puppet:///modules/riemann/etc/layout.json',
-    owner  => $user,
+    owner  => $user
   }
 
   file { '/etc/riemann.sample.config':
     ensure => present,
     source => 'puppet:///modules/riemann/etc/riemann.config',
+    owner  => $user,
+  }
+  file { '/etc/riemann-count-hosts.clj':
+    ensure => present,
+    source => 'puppet:///modules/riemann/etc/riemann-count-hosts.clj',
+    owner  => $user,
+  }
+  file { '/etc/riemann-cpu-utilization-perc.clj':
+    ensure => present,
+    source => 'puppet:///modules/riemann/etc/riemann-cpu-utilization-perc.clj',
     owner  => $user,
   }
 
