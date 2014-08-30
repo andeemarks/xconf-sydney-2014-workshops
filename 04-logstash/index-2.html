@@ -208,30 +208,12 @@
 			<h2>Part 3: Setup Kibana</h2>
 				<ol>
 				<li>
-					Login into log-stash-server vm
-				</li>
-
-				<li>
-					Install apache
+					Login into log-stash-server vm <br>
 					<div class="code">
-					<b>sudo</b> yum install httpd
+						vagrant ssh log-stash-server
 					</div>
-				</li>
 
-				<li>
-					Download Kibana</br>
-					Make a directory for kibana tar:
-					<div class="code">
-					<b>sudo</b> mkdir /opt/kibana; cd /opt/kibana
-					</div>
-					
-					Download the tar, and untar.
-					<div class="code">
-					<b>sudo</b> curl -O https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz
-					<b>sudo</b> tar zxf /opt/kibana/kibana-3.1.0.tar.gz
-					</div>
 				</li>
-
 				<li>
 					<p>Make Kibana talks to Elasticsearch</p>
 					Change kibana config to use your log stash server host, and port number to 80. The reason we change it 80 is because we're going to access kibana on port 80:
@@ -239,10 +221,11 @@
 					<b>sudo</b> vim /opt/kibana/kibana-3.1.0/config.js
 					</div>
 
-					Search for elasticsearch: "http://"+window.location.hostname+":9200" and change the address to "http://<your>-log-stash-server.local:80"
-					Copy the contents of the extracted directory to where the webserver is:
+					Search for elasticsearch: "http://"+window.location.hostname+":9200" and change the address to "http://<i>whoami</i>-log-stash-server.local:80" <br><br>
+					Copy the contents of the extracted directory to where the apache webserver is:
 					<div class="code">
-					<b>sudo</b> mkdir -p /var/www/kibana3 ; <b>sudo</b> cp -R /opt/kibana/kibana-3.1.0/* /var/www/kibana3
+					<b>sudo</b> mkdir -p /var/www/kibana3 ; <br>
+					<b>sudo</b> cp -R /opt/kibana/kibana-3.1.0/* /var/www/kibana3
 					</div>
 					<p>Notes: mkdir '-p' option will create immediate directory that don't exist</p>
 				</li>
@@ -253,11 +236,11 @@
 					<div class="code">
 					<b>sudo</b> vim kibana3.conf
 					</div>
-					<p>Copy the content from sample-kibana.conf</p>
+					<p>Copy the content from Kinbana-sample-config</p>
 					Change
 					<ul>
-					<li>VirtualHost name to <your>-log-stash-server.local:80,</li>
-					<li>ServerName to <your>-log-stash-server.local and</li>
+					<li>VirtualHost name to <i>whoami</i>-log-stash-server.local:80,</li>
+					<li>ServerName to <i>whoami</i>-log-stash-server.local and</li>
 					<li>DocumentRoot to where you copied your extracted kibana content to(/var/www/kibana3).</li>
 					</ul>
 					</br>
@@ -266,7 +249,8 @@
 				<li>
 					Copy the kibana config to apache configuration folder
 					<div class="code">
-					<b>sudo</b> mkdir -p /etc/httpd/conf.d/ ; <b>sudo</b> cp kibana3.conf /etc/httpd/conf.d/ 
+					<b>sudo</b> mkdir -p /etc/httpd/conf.d/ ;<br>
+					 <b>sudo</b> cp kibana3.conf /etc/httpd/conf.d/ 
 					</div>
 				</li>
 
@@ -283,11 +267,15 @@
 				<li>
 					Start apache server
 					<div class="code">
-					<b>sudo</b> /sbin/service httpd start
-					<b>sudo</b> /sbin/service httpd status
-					http://<your>-log-stash-server.local:80 
+					<b>sudo</b> /sbin/service httpd start <br><br>
 				</div>
 
+				<h3>
+					<p>Find Kibana running at:</p>
+					<div class="code">
+						http://<i>whoami</i>-log-stash-server.local
+					</div>
+				</h3>
 				</li>
 				</ol>
 			</div>
