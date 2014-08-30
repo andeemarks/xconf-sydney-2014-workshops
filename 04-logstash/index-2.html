@@ -132,12 +132,25 @@
 			<ol>
 			
 			<li>
-				<p>Let's start with web-service VM.</p>
-				Log in to web-service VM
+				Log in to application VM
 				<div class="code">
 					vagrant ssh web-service
 				</div>
+				or
+				<div class="code">
+					vagrant ssh client-app
+				</div>
 			</li>
+
+			<li>
+				Download and install Logstash Forwarder package
+				<div class="code">
+					<p>curl -O http://packages.elasticsearch.org/logstashforwarder/centos/logstash-forwarder-0.3.1-1.x86_64.rpm</p>
+					<p>sudo rpm -ivh ~/logstash-forwarder-0.3.1-1.x86_64.rpm</p>
+				</div>
+			</li>
+
+
 
 			<li>
 				Copy ssl cert from /vagrant share folder to some appropriate location
@@ -147,8 +160,16 @@
 					<b>sudo</b> cp /vagrant/logstash-forwarder.crt /opt/logstash-forwarder/ssl/
 				</div>
 			</li>
+
+
+
 			<li>
-				Configure Forwarder config file
+				<p>Configure Forwarder config file</p>
+				Copy the sample logstash forwarder config file from /vagrant share folder
+				<div class="code">
+				<b>sudo</b> cp /vagrant/Logstash-Samples/configs/Logstash-Forwarder-sample-config /opt/logstash-forwarder/logstash-forwarder.conf
+				</div>
+				Edit the config file:
 				<div class="code">
 					<b>sudo</b> vim /opt/logstash-forwarder/logstash-forwarder.conf
 				</div>
@@ -156,7 +177,7 @@
 
 				<p>Change:
 				<ul>
-				<li>the ip to <i>whoami</i>-log-stash-server.local</li>
+				<li>the ip to <i>whoami</i>-log-stash-server.local OR your ip address*</li> 
 				<li>the port to the port number you are listening to in log-stash-server (we use 9876)</li>
 				<li>the ssl_ca to be the path that you have your cert (should be in /opt/logstash-forwarder/ssl/logstash-forwarder.crt)</li>
 				<li>Depending on where you want to collect the log from, in 'files', add 'paths' and 'fields' accordingly. We will add the app-log path ( eg. In web-service, log path is "/usr/bin/xconf-go-svc.log" ) and fields ( "type" => "service-log").</li>
