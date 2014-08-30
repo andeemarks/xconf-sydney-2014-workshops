@@ -69,11 +69,17 @@
 			</li>
 
 			<li>
-				Configure logstash config file, put it in /opt/logstash/
+				<p>Configure logstash config file, put it in /opt/logstash/</p>
+				
+				Copy the sample logstash server config file from /vagrant share folder
+				<div class="code">
+				<b>sudo</b> cp /vagrant/Logstash-Samples/configs/Logstash-Server-sample-config /opt/logstash/logstash-server.conf
+				</div>
+
+				Edit the config file:
 				<div class="code">
 				<b>sudo</b> vim /opt/logstash/logstash-server.conf
 				</div>
-				<p>Copy the content from the sample-logstash-server.conf
 				
 				<p>Change:
 				<ul>
@@ -81,6 +87,8 @@
 				<li>the ssl_certificate and ssl_key to point to the cert and private key we created earlier (/opt/logstash/ssl/logstash-forwarder.crt     and    /opt/logstash/ssl/logstash-forwarder.key)</li>
 				</ul>
 				</p>
+
+				<p>Notes: If you want to avoid vim, you can edit the sample file first (find it at /Logstash-Samples/configs/Logstash-Server-sample-config), and copy it to vm after you make the changes.</p>
 			</li>	
 				
 			<li>	
@@ -114,15 +122,28 @@
 			</div>
 
 
+
+
+
 			<div id="part2">
 			<h2>Part 2: Setup Logstash Forwarder in client-app + web-service</h2>
 				<p>(repeat these steps on each of the machine you want to gather logs from)</p><br>
 				
 			<ol>
+			
+			<li>
+				<p>Let's start with web-service VM.</p>
+				Log in to web-service VM
+				<div class="code">
+					vagrant ssh web-service
+				</div>
+			</li>
+
 			<li>
 				Copy ssl cert from /vagrant share folder to some appropriate location
 				<div class="code">
-					<b>sudo</b> mkdir /opt/logstash-forwarder/ssl
+					<b>sudo</b> mkdir /opt/logstash-forwarder/ssl</br>
+					</br>
 					<b>sudo</b> cp /vagrant/logstash-forwarder.crt /opt/logstash-forwarder/ssl/
 				</div>
 			</li>
@@ -131,13 +152,17 @@
 				<div class="code">
 					<b>sudo</b> vim /opt/logstash-forwarder/logstash-forwarder.conf
 				</div>
+				<p>Copy the content from the sample forwarder.conf</p>
+
+				<p>Change:
 				<ul>
-				<li>Copy the content from the sample forwarder.conf</li>
-				<li>Change the ip to log-stash-server_hostname.local</li>
-				<li>Change port to the port number you are listening to in log-stash-server (we use 9876)</li>
-				<li>Change ssl ca to be the path that you have your cert (/opt/logstash-forwarder/ssl/logstash-forwarder.crt)</li>
+				<li>the ip to <i>whoami</i>-log-stash-server.local</li>
+				<li>the port to the port number you are listening to in log-stash-server (we use 9876)</li>
+				<li>the ssl_ca to be the path that you have your cert (should be in /opt/logstash-forwarder/ssl/logstash-forwarder.crt)</li>
 				<li>Depending on where you want to collect the log from, in 'files', add 'paths' and 'fields' accordingly. We will add the app-log path ( eg. In web-service, log path is "/usr/bin/xconf-go-svc.log" ) and fields ( "type" => "service-log").</li>
 				</ul>
+				</p>
+
 			</li>
 			<li>
 				<h4>Start Forwarder</h4>
@@ -163,8 +188,13 @@
 				</div>
 			</li>
 
+			<li>
+				<p>Repeat steps on client-app VM.</p>
+			</li>
 			</ol>
 			</div>
+
+
 
 
 
@@ -173,7 +203,7 @@
 			<ul><li>
 				At this time, you should be able to see the Elasticsearch output by going to 
 				<div class="code">
-					http://<your>-log-stash-server.local:9200/_search?pretty=true&size=1000
+					http://<i>whoami</i>-log-stash-server.local:9200/_search?pretty=true&size=1000
 				</div>
 			</li></ul>
 			</div>
@@ -186,30 +216,12 @@
 			<h2>Part 3: Setup Kibana</h2>
 				<ol>
 				<li>
-					Login into log-stash-server vm
-				</li>
-
-				<li>
-					Install apache
+					Login into log-stash-server vm <br>
 					<div class="code">
-					<b>sudo</b> yum install httpd
+						vagrant ssh log-stash-server
 					</div>
-				</li>
 
-				<li>
-					Download Kibana</br>
-					Make a directory for kibana tar:
-					<div class="code">
-					<b>sudo</b> mkdir /opt/kibana; cd /opt/kibana
-					</div>
-					
-					Download the tar, and untar.
-					<div class="code">
-					<b>sudo</b> curl -O https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz
-					<b>sudo</b> tar zxf /opt/kibana/kibana-3.1.0.tar.gz
-					</div>
 				</li>
-
 				<li>
 					<p>Make Kibana talks to Elasticsearch</p>
 					Change kibana config to use your log stash server host, and port number to 80. The reason we change it 80 is because we're going to access kibana on port 80:
@@ -217,10 +229,11 @@
 					<b>sudo</b> vim /opt/kibana/kibana-3.1.0/config.js
 					</div>
 
-					Search for elasticsearch: "http://"+window.location.hostname+":9200" and change the address to "http://<your>-log-stash-server.local:80"
-					Copy the contents of the extracted directory to where the webserver is:
+					Search for elasticsearch: "http://"+window.location.hostname+":9200" and change the address to "http://<i>whoami</i>-log-stash-server.local:80" <br><br>
+					Copy the contents of the extracted directory to where the apache webserver is:
 					<div class="code">
-					<b>sudo</b> mkdir -p /var/www/kibana3 ; <b>sudo</b> cp -R /opt/kibana/kibana-3.1.0/* /var/www/kibana3
+					<b>sudo</b> mkdir -p /var/www/kibana3 ; <br>
+					<b>sudo</b> cp -R /opt/kibana/kibana-3.1.0/* /var/www/kibana3
 					</div>
 					<p>Notes: mkdir '-p' option will create immediate directory that don't exist</p>
 				</li>
@@ -231,11 +244,11 @@
 					<div class="code">
 					<b>sudo</b> vim kibana3.conf
 					</div>
-					<p>Copy the content from sample-kibana.conf</p>
+					<p>Copy the content from Kinbana-sample-config</p>
 					Change
 					<ul>
-					<li>VirtualHost name to <your>-log-stash-server.local:80,</li>
-					<li>ServerName to <your>-log-stash-server.local and</li>
+					<li>VirtualHost name to <i>whoami</i>-log-stash-server.local:80,</li>
+					<li>ServerName to <i>whoami</i>-log-stash-server.local and</li>
 					<li>DocumentRoot to where you copied your extracted kibana content to(/var/www/kibana3).</li>
 					</ul>
 					</br>
@@ -244,7 +257,8 @@
 				<li>
 					Copy the kibana config to apache configuration folder
 					<div class="code">
-					<b>sudo</b> mkdir -p /etc/httpd/conf.d/ ; <b>sudo</b> cp kibana3.conf /etc/httpd/conf.d/ 
+					<b>sudo</b> mkdir -p /etc/httpd/conf.d/ ;<br>
+					 <b>sudo</b> cp kibana3.conf /etc/httpd/conf.d/ 
 					</div>
 				</li>
 
@@ -261,11 +275,15 @@
 				<li>
 					Start apache server
 					<div class="code">
-					<b>sudo</b> /sbin/service httpd start
-					<b>sudo</b> /sbin/service httpd status
-					http://<your>-log-stash-server.local:80 
+					<b>sudo</b> /sbin/service httpd start <br><br>
 				</div>
 
+				<h3>
+					<p>Find Kibana running at:</p>
+					<div class="code">
+						http://<i>whoami</i>-log-stash-server.local
+					</div>
+				</h3>
 				</li>
 				</ol>
 			</div>
