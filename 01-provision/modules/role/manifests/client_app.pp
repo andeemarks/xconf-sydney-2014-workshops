@@ -1,7 +1,7 @@
 class role::client_app {
   include common
   include apache
-  include logstash_forwarder
+  # include logstash_forwarder
   include tw_collectd
   include ruby::v193
 
