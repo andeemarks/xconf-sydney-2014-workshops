@@ -36,7 +36,7 @@
       </materials>
       <stage name="Build_client">
         <jobs>
-          <job name="Build_client_Romit">
+          <job name="Build_client">
             <tasks>
               <exec command="mkdir" args="-p dist" />
               <exec command="tar" args="--exclude='./dist' -zcvf dist/xconf-svc-client.tgz ." />
