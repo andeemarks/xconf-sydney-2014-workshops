@@ -73,7 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'ci-server' do |box|
-    box.vm.box = 'go-ci-server'
+    box.vm.box = 'go-ci-server.box'
     box.vm.box_check_update = false
 
     common_network_config box
@@ -95,7 +95,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define 'ci-agent' do |box|
-    box.vm.box = 'go-ci-agent'
+    box.vm.box = 'go-ci-agent.box'
     box.vm.box_check_update = false
 
     common_network_config box
