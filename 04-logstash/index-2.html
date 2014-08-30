@@ -32,35 +32,64 @@
 	<div class="row">
 		<div class="col-xs-10 col-xs-offset-1">
 			
-		 	<h1>Logstash + Grok + Elasticsearch + Kibana</h1>
-
-			<h2>Setup log-stash-server</h2>
+		 	<h1>Logstash + Elasticsearch + Kibana</h1>
+			<img src="http://blog.xebia.fr/wp-content/uploads/2013/12/file-logstash-es-kibana.png" alt="Logstash setup diagram.">
+			
 			<div>
-				Logstash should have been installed via puppet.
-				Generate SSL Certificates. We create a /ssl folder within logstash to store the created key and cert
+			<h2>Sections</h2>
+			<ul>
+				<li>Part 1: Setup Logstash Server & Elasticsearch</li>
+				<li>Part 2: Setup Logstash Forwarder</li>
+				<li>Part 3: Setup Kibana</li>
+			</ul>
+			</div>
+
+			<h2>Part 1: Setup Logstash Server & Elasticsearch</h2>
+			<ol>
+			<li>
+				Spin up log-stash-server:
+				<div class="code">
+				vagrant up log-stash-server
+				vagrant ssh log-stash-server
+				</div>
+				<p>When you spin up log-stash-server vm, Logstash and Elasticsearch should have been installed via puppet.</p></br>
+
+			</li>
+
+			<li>
+				Generate SSL Certificates so that vm's can talk to each other. Create a '/ssl' folder within logstash to store the created key and cert:
 				<div class="code">
 				<b>sudo</b> mkdir /opt/logstash/ssl/
 				<b>sudo</b> openssl req -x509 -batch -nodes -days 3650 -newkey rsa:2048 -keyout /opt/logstash/ssl/logstash-forwarder.key -out /opt/logstash/ssl/logstash-forwarder.crt
 				</div>
+			</li>
+
+			<li>
 				Configure logstash config file, put it in /opt/logstash
 				<div class="code">
 				<b>sudo</b> vim /opt/logstash/logstash-server.conf
 				</div>
-				Copy the content from the sample-logstash-server.conf
+				<p>Copy the content from the sample-logstash-server.conf
 				Change port to some port number you want (we use 9876)
-				Change ssl_certificate and ssl_key to point to the cert and private key we created earlier (/opt/logstash/ssl/logstash-forwarder.crt     and    /opt/logstash/ssl/logstash-forwarder.key)
+				Change ssl_certificate and ssl_key to point to the cert and private key we created earlier (/opt/logstash/ssl/logstash-forwarder.crt     and    /opt/logstash/ssl/logstash-forwarder.key)</p></br>
+			</li>	
 				
+			<li>	
 				Pre-step in setting up Logstash Forwarder: copy the ssl cert we generated earlier to client app vm via /vagrant share folder. To do that, copy ssl cert to /vagrant share folder:
 				<div class="code">
 				cp /opt/logstash/ssl/logstash-forwarder.crt /vagrant/
 				</div>
+			</li>
 
+			<li>
 				<h4>Start Elasticserach</h4>
 				<div class="code">
 				<b>sudo</b> nohup /usr/share/elasticsearch/bin/elasticsearch &
 				</div>
 				(optional) if you want to check if ES is running: ps -ef | grep nohup
-				
+			</li>
+
+			<li>
 				<h4>Start logstash by using this command:</h4>
 				<div class="code"> 
 				/opt/logstash/bin/logstash -f /opt/logstash/logstash-server.conf
@@ -71,7 +100,13 @@
 				Using milestone 1 filter plugin 'syslog_pri'. This plugin should work, but would benefit from use by folks like you. Please let us know if you find bugs or have suggestions on how to improve this plugin.  For more information on plugin milestones, see http://logstash.net/docs/1.4.2-modified/plugin-milestones {:level=>:warn}."
 				</div>
 				But you will not see any output, because no service is outputting to logstash-server yet.
-			</div>
+			</li>
+			
+		</div>
+
+
+
+
 
 			<h2>Setup Logstash Forwarder in client-app + web-service</h2>
 			<div>
@@ -120,7 +155,7 @@
 				http://<your>-log-stash-server.local:9200/_search?pretty=true&size=1000
 			</div>
 
-			<h2>Kibana</h2>
+			<h2>Setup Kibana</h2>
 			<div>
 				<div class="code">
 				<b>sudo</b> yum install httpd
